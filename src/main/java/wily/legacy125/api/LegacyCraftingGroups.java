@@ -61,7 +61,7 @@ public final class LegacyCraftingGroups {
         if (item instanceof ItemArmor) return "armor:" + ((ItemArmor) item).armorType;
 
         String normalized = normalizedName(output);
-        String namedFamily = namedVariantFamily(normalized);
+        String namedFamily = namedVariantFamily(output, normalized);
         if (namedFamily != null) return namedFamily;
 
         String tool = toolFamily(output);
@@ -84,7 +84,7 @@ public final class LegacyCraftingGroups {
         return normalized.length() == 0 ? normalizedName(output) : normalized;
     }
 
-    private static String namedVariantFamily(String name) {
+    private static String namedVariantFamily(ItemStack output, String name) {
         int jacket = name.indexOf(" jacketed ");
         if (jacket > 0) return "jacketed:" + name.substring(0, jacket);
 
@@ -95,7 +95,46 @@ public final class LegacyCraftingGroups {
             return "ee2:anti-matter-relay";
         }
         if (name.endsWith(" engine")) return "machine:engine";
+        if (oneOf(name, "low voltage solar array", "medium voltage solar array",
+                "high voltage solar array")) return "compact-solars:array";
+        if (oneOf(name, "lv transformer", "mv transformer", "hv transformer")) {
+            return "ic2:transformer";
+        }
+        if (oneOf(name, "batbox", "mfe", "mfsu")) return "ic2:energy-storage";
+        if (name.startsWith("klein star ")) return "ee2:klein-star";
+        if (oneOf(name, "silver chest", "iron chest", "copper chest", "gold chest",
+                "diamond chest", "crystal chest")) return "iron-chests:chest";
+        if (oneOf(name, "dm furnace", "rm furnace")) return "ee2:matter-furnace";
+        if (oneOf(name, "dm block", "rm block")) return "ee2:matter-block";
+        if (name.equals("vis ore") || name.endsWith(" vis ore")) return "thaumcraft:vis-ore";
+        if (oneOf(name, "generator", "geothermal generator", "water mill", "wind mill")
+                || name.equals("solar panel") && isIc2GeneratorItem(output)) return "ic2:generator";
+        if (oneOf(name, "and gate", "nand gate")) return "redpower:and-gate";
+        if (oneOf(name, "or gate", "nor gate")) return "redpower:or-gate";
+        if (oneOf(name, "xor gate", "xnor gate")) return "redpower:xor-gate";
+        if (oneOf(name, "pneumatic tube", "restriction tube", "redstone tube", "magtube",
+                "fluid pipe")) return "redpower:tube";
+        if (oneOf(name, "wireless receiver", "wireless transmitter", "wireless jammer")) {
+            return "wireless-redstone:node";
+        }
+        if (oneOf(name, "od scanner", "ov scanner")) return "ic2:scanner";
+        if (name.equals("tfbp empty") || name.startsWith("tfbp ")) return "ic2:tfbp";
+        if (oneOf(name, "overclocker upgrade", "transformer upgrade", "energy storage upgrade")) {
+            return "ic2:upgrade";
+        }
+        if (oneOf(name, "land mark", "path mark")) return "buildcraft:marker";
         return null;
+    }
+
+    private static boolean oneOf(String value, String... candidates) {
+        for (String candidate : candidates) if (candidate.equals(value)) return true;
+        return false;
+    }
+
+    private static boolean isIc2GeneratorItem(ItemStack output) {
+        Class<?> type = output.getItem().getClass();
+        return type.getName().toLowerCase(Locale.ENGLISH).startsWith("ic2.")
+                || hierarchyName(type).contains("itemgenerator");
     }
 
     public static boolean isToolLike(ItemStack output) {

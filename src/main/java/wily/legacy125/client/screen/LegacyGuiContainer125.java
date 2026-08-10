@@ -28,8 +28,14 @@ public abstract class LegacyGuiContainer125 extends GuiContainer implements Lega
         if (!legacyVisualMouseOverride) {
             legacyMouseX = mouseX;
             legacyMouseY = mouseY;
+        } else {
+            mouseX = legacyMouseX;
+            mouseY = legacyMouseY;
         }
-        super.drawScreen(mouseX, mouseY, partialTick);
+        boolean carrying = mc != null && mc.thePlayer != null
+                && mc.thePlayer.inventory.getItemStack() != null;
+        int carriedOffset = LegacyCarriedStackPosition125.offset(mouseX, mouseY, carrying);
+        super.drawScreen(mouseX + carriedOffset, mouseY + carriedOffset, partialTick);
     }
 
     @Override
@@ -87,6 +93,12 @@ public abstract class LegacyGuiContainer125 extends GuiContainer implements Lega
         if (point == null) return;
         legacyMouseX = point[0];
         legacyMouseY = point[1];
+        legacyVisualMouseOverride = true;
+    }
+
+    public final void legacyVisualPointerTopLeft() {
+        legacyMouseX = 0;
+        legacyMouseY = 0;
         legacyVisualMouseOverride = true;
     }
 

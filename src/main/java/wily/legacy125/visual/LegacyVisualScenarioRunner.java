@@ -6,6 +6,8 @@ import net.minecraft.src.ContainerChest;
 import net.minecraft.src.ContainerFurnace;
 import net.minecraft.src.ContainerWorkbench;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.PlayerControllerCreative;
 import net.minecraft.src.TileEntityChest;
 import net.minecraft.src.TileEntityFurnace;
@@ -65,7 +67,9 @@ public final class LegacyVisualScenarioRunner {
         String configured = System.getProperty("legacy4j.visualScenarios", "").trim();
         if (configured.length() == 0) return new LegacyVisualScenarioRunner(new ArrayList<String>(), null, false);
         List<String> scenarios = new ArrayList<String>();
-        for (String value : configured.split(",")) {
+        // Prism serializes commas as separate values and semicolons as INI
+        // comments. A plus keeps multi-scenario audits as one JVM property.
+        for (String value : configured.split("[,+]")) {
             String scenario = value.trim();
             if (scenario.length() > 0) scenarios.add(scenario);
         }
@@ -153,6 +157,7 @@ public final class LegacyVisualScenarioRunner {
         // Restore any slot coordinates owned by the previous screen before a
         // new screen snapshots a shared player container.
         minecraft.displayGuiScreen(null);
+        if (minecraft.thePlayer != null) minecraft.thePlayer.inventory.setItemStack(null);
         movePointerOffUi(minecraft);
         String screenScenario = baseScenario(scenario);
         GuiScreen screen;
@@ -209,6 +214,7 @@ public final class LegacyVisualScenarioRunner {
         }
         if (scenario.endsWith("_mouse_hover")) movePointerToFirstSlot(minecraft, screen);
         else if (scenario.endsWith("_controller_hover")) showControllerFocus(screen);
+        else if (scenario.endsWith("_carried_top_left")) showCarriedStackAtTopLeft(minecraft, screen);
     }
 
     private String baseScenario(String scenario) {
@@ -217,6 +223,9 @@ public final class LegacyVisualScenarioRunner {
         }
         if (scenario.endsWith("_controller_hover")) {
             return scenario.substring(0, scenario.length() - "_controller_hover".length());
+        }
+        if (scenario.endsWith("_carried_top_left")) {
+            return scenario.substring(0, scenario.length() - "_carried_top_left".length());
         }
         return scenario;
     }
@@ -237,6 +246,12 @@ public final class LegacyVisualScenarioRunner {
         // changing that selection's position.
         if (screen instanceof LegacyCraftingScreen) controllerScreen.onControllerButton(PadButton.LEFT_STICK);
         else controllerScreen.onControllerButton(PadButton.A);
+    }
+
+    private void showCarriedStackAtTopLeft(Minecraft minecraft, GuiScreen screen) {
+        if (!(screen instanceof LegacyGuiContainer125)) return;
+        minecraft.thePlayer.inventory.setItemStack(new ItemStack(Item.coal, 32));
+        ((LegacyGuiContainer125) screen).legacyVisualPointerTopLeft();
     }
 
     private void setBlock(Minecraft minecraft, int blockId) {

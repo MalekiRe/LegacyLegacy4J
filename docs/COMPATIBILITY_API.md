@@ -66,6 +66,12 @@ The bundled rules group RedPower jacketed wire/cable/bluewire by jacket
 material, EE2 collector and anti-matter relay tiers by machine, and BuildCraft
 engines by engine type. This ordering prevents similarly named but unrelated
 items, such as RedPower's plain Relay, from entering an EE2 tier dropdown.
+The Ye Olde Times profile also recognizes Compact Solar tiers, IC2 generators,
+storage, transformers, scanners, TFBPs and upgrades, EE2 matter tiers and Klein
+Stars, Iron Chests, Thaumcraft vis ores, RedPower gate/tube families, Wireless
+Redstone nodes, and BuildCraft markers. Ambiguous display names are checked
+against their legacy item class where needed, so RedPower's Solar Panel does
+not enter the IC2 generator family.
 
 A mod can override the inferred family without depending on screen internals:
 

@@ -73,6 +73,57 @@ final class LegacyRecipeGroupTest {
     }
 
     @Test
+    void groupsApprovedEnergyAndStorageProgressions() {
+        assertSameGroup(named(30500, "Low Voltage Solar Array"),
+                named(30501, "Medium Voltage Solar Array"), named(30502, "High Voltage Solar Array"));
+        assertSameGroup(named(30503, "LV-Transformer"),
+                named(30504, "MV-Transformer"), named(30505, "HV-Transformer"));
+        assertSameGroup(named(30506, "BatBox"), named(30507, "MFE"), named(30508, "MFSU"));
+        assertSameGroup(named(30509, "Generator"), named(30510, "Geothermal Generator"),
+                named(30511, "Water Mill"), named(30512, "Wind Mill"), ic2Generator(30513, "Solar Panel"));
+        assertFalse(LegacyRecipeGroup.key(named(30564, "Solar Panel")).equals(
+                LegacyRecipeGroup.key(named(30509, "Generator"))));
+    }
+
+    @Test
+    void groupsApprovedEe2AndThaumcraftProgressions() {
+        assertSameGroup(named(30514, "Klein Star Ein"), named(30515, "Klein Star Zwei"),
+                named(30516, "Klein Star Drei"), named(30517, "Klein Star Vier"),
+                named(30518, "Klein Star Sphere"), named(30519, "Klein Star Omega"));
+        assertSameGroup(named(30520, "DM Furnace"), named(30521, "RM Furnace"));
+        assertSameGroup(named(30522, "DM Block"), named(30523, "RM Block"));
+        assertSameGroup(named(30524, "Vis Ore"), named(30525, "Aqueous Vis Ore"),
+                named(30526, "Earthen Vis Ore"), named(30527, "Fiery Vis Ore"),
+                named(30528, "Tainted Vis Ore"), named(30529, "Vaporous Vis Ore"));
+    }
+
+    @Test
+    void groupsApprovedRedPowerAndWirelessFamilies() {
+        assertSameGroup(named(30530, "AND Gate"), named(30531, "NAND Gate"));
+        assertSameGroup(named(30532, "OR Gate"), named(30533, "NOR Gate"));
+        assertSameGroup(named(30534, "XOR Gate"), named(30535, "XNOR Gate"));
+        assertSameGroup(named(30536, "Pneumatic Tube"), named(30537, "Restriction Tube"),
+                named(30538, "Redstone Tube"), named(30539, "Magtube"), named(30540, "Fluid Pipe"));
+        assertSameGroup(named(30541, "Wireless Receiver"), named(30542, "Wireless Transmitter"),
+                named(30543, "Wireless Jammer"));
+    }
+
+    @Test
+    void groupsApprovedIc2UtilitiesBuildCraftMarkersAndIronChests() {
+        assertSameGroup(named(30544, "OD Scanner"), named(30545, "OV Scanner"));
+        assertSameGroup(named(30546, "TFBP - Empty"), named(30547, "TFBP - Cultivation"),
+                named(30548, "TFBP - Desertification"), named(30549, "TFBP - Irrigation"),
+                named(30550, "TFBP - Chilling"), named(30551, "TFBP - Flatification"),
+                named(30552, "TFBP - Mushroom"));
+        assertSameGroup(named(30553, "Overclocker Upgrade"), named(30554, "Transformer Upgrade"),
+                named(30555, "Energy Storage Upgrade"));
+        assertSameGroup(named(30556, "Land Mark"), named(30557, "Path Mark"));
+        assertSameGroup(named(30558, "Copper Chest"), named(30559, "Iron Chest"),
+                named(30560, "Silver Chest"), named(30561, "Gold Chest"),
+                named(30562, "Diamond Chest"), named(30563, "Crystal Chest"));
+    }
+
+    @Test
     void readsIc2StyleDirectRecipeImplementations() {
         ForeignRecipe shaped = new ForeignRecipe(new ItemStack(Item.pickaxeSteel),
                 new ItemStack[]{new ItemStack(Item.ingotIron), new ItemStack(Item.ingotIron),
@@ -139,6 +190,10 @@ final class LegacyRecipeGroupTest {
         return new ItemStack(new NamedItem(id, name));
     }
 
+    private static ItemStack ic2Generator(int id, String name) {
+        return new ItemStack(new FakeItemGenerator(id, name));
+    }
+
     private static void assertSameGroup(ItemStack first, ItemStack... others) {
         String expected = LegacyRecipeGroup.key(first);
         for (ItemStack other : others) assertEquals(expected, LegacyRecipeGroup.key(other));
@@ -148,6 +203,20 @@ final class LegacyRecipeGroupTest {
         private final String displayName;
 
         private NamedItem(int id, String displayName) {
+            super(id);
+            this.displayName = displayName;
+        }
+
+        @Override
+        public String getItemDisplayName(ItemStack stack) {
+            return displayName;
+        }
+    }
+
+    private static final class FakeItemGenerator extends Item {
+        private final String displayName;
+
+        private FakeItemGenerator(int id, String displayName) {
             super(id);
             this.displayName = displayName;
         }
