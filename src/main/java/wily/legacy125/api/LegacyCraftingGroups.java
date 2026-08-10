@@ -123,7 +123,90 @@ public final class LegacyCraftingGroups {
             return "ic2:upgrade";
         }
         if (oneOf(name, "land mark", "path mark")) return "buildcraft:marker";
+
+        // Approved Ye Olde Times recipe families. Keep these explicit: broad
+        // suffix matching can accidentally combine unrelated ModLoader items.
+        if (oneOf(name, "machine block", "advanced machine block")) {
+            return "ic2:machine-block";
+        }
+        if (oneOf(name, "electric furnace", "induction furnace")) return "ic2:furnace";
+        if (oneOf(name, "gold cable", "insulated gold cable", "2xins. gold cable")) {
+            return "ic2:cable-gold";
+        }
+        if (oneOf(name, "copper cable", "uninsulated copper cable")) return "ic2:cable-copper";
+        if (oneOf(name, "hv cable", "insulated hv cable", "2xins. hv cable", "4xins. hv cable")) {
+            return "ic2:cable-hv";
+        }
+        if (oneOf(name, "glass fibre cable", "eu detector cable", "eu splitter cable",
+                "ultra low current cable")) return "ic2:cable-special";
+        if (oneOf(name, "empty cell", "water cell", "lava cell", "bio cell", "h. coal cell",
+                "uranium cell", "near depleted uranium cell", "depleted isotope cell")) {
+            return "ic2:cell";
+        }
+        if (oneOf(name, "macerator", "extractor", "compressor", "recycler", "canning machine")) {
+            return "ic2:processing-machine";
+        }
+
+        if (isIronChestUpgrade(name)) return "iron-chests:upgrade";
+
+        if (oneOf(name, "alchemical coal", "mobius fuel", "aeternalis fuel")) return "ee2:fuel";
+        if (oneOf(name, "soul stone", "body stone", "life stone", "mind stone")) return "ee2:stone";
+        if (oneOf(name, "evertide amulet", "volcanite amulet")) return "ee2:amulet";
+        if (oneOf(name, "destruction catalyst", "hyperkinetic lens", "catalytic lens")) {
+            return "ee2:catalyst-lens";
+        }
+        if (oneOf(name, "iron band", "black hole band", "ring of ignition", "zero ring",
+                "ring of arcana", "void ring", "swiftwolf's rending gale", "harvest goddess band")) {
+            return "ee2:ring-band";
+        }
+
+        if (oneOf(name, "mining well", "quarry", "mining pipe")) return "buildcraft:mining";
+        if (oneOf(name, "builder", "filler", "architect table", "blueprint library")) {
+            return "buildcraft:construction";
+        }
+
+        if (oneOf(name, "rs latch", "toggle latch", "transparent latch")) return "redpower:latch";
+        if (oneOf(name, "state cell", "invert cell", "non invert cell", "null cell")) {
+            return "redpower:logic-cell";
+        }
+        if (oneOf(name, "timer", "sequencer", "repeater", "pulse former", "synchronizer")) {
+            return "redpower:timing";
+        }
+        if (oneOf(name, "transposer", "filter", "retriever", "regulator", "item detector",
+                "buffer", "relay")) return "redpower:transport-machine";
+        if (oneOf(name, "deployer", "block breaker", "ejector", "assembler", "sorting machine")) {
+            return "redpower:automation-machine";
+        }
+        if (oneOf(name, "backplane", "8k ram module", "central processing unit", "cpu",
+                "io expander", "monitor", "disk drive", "ribbon cable")) {
+            return "redpower:computer";
+        }
+        if (oneOf(name, "blulectric furnace", "blulectric alloy furnace")) {
+            return "redpower:blulectric-furnace";
+        }
+
+        if (oneOf(name, "vis conduit", "vis filter", "vis valve")) return "thaumcraft:vis-network";
+        if (oneOf(name, "vis pump", "vis condenser", "vis storage tank")) {
+            return "thaumcraft:vis-machine";
+        }
+
+        if (oneOf(name, "wireless transceiver", "blaze transceiver")) {
+            return "wireless-redstone:transceiver";
+        }
+        if (oneOf(name, "receiver dish", "blaze receiver dish")) {
+            return "wireless-redstone:receiver-dish";
+        }
+        if (oneOf(name, "wireless sniffer", "private sniffer")) return "wireless-redstone:sniffer";
+        if (oneOf(name, "wireless remote", "wireless map", "wireless tracker", "triangulator")) {
+            return "wireless-redstone:handheld";
+        }
         return null;
+    }
+
+    private static boolean isIronChestUpgrade(String name) {
+        return oneOf(name, "copper to iron chest upgrade", "copper to silver chest upgrade",
+                "silver to gold chest upgrade", "iron to gold chest upgrade",
+                "gold to diamond chest upgrade", "diamond to crystal chest upgrade");
     }
 
     private static boolean oneOf(String value, String... candidates) {

@@ -125,6 +125,83 @@ final class LegacyRecipeGroupTest {
     }
 
     @Test
+    void groupsApprovedIc2MachinesCablesCellsAndIronChestUpgrades() {
+        assertSameGroup(named(30600, "Machine Block"), named(30601, "Advanced Machine Block"));
+        assertSameGroup(named(30602, "Electric Furnace"), named(30603, "Induction Furnace"));
+        assertSameGroup(named(30604, "Macerator"), named(30605, "Extractor"),
+                named(30606, "Compressor"), named(30607, "Recycler"), named(30608, "Canning Machine"));
+
+        assertSameGroup(named(30609, "Gold Cable"), named(30610, "Insulated Gold Cable"),
+                named(30611, "2xIns. Gold Cable"));
+        assertSameGroup(named(30612, "Copper Cable"), named(30613, "Uninsulated Copper Cable"));
+        assertSameGroup(named(30614, "HV Cable"), named(30615, "Insulated HV Cable"),
+                named(30616, "2xIns. HV Cable"), named(30617, "4xIns. HV Cable"));
+        assertSameGroup(named(30618, "Glass Fibre Cable"), named(30619, "EU-Detector Cable"),
+                named(30620, "EU-Splitter Cable"), named(30621, "Ultra-Low-Current Cable"));
+        assertAllDifferent(named(30609, "Gold Cable"), named(30612, "Copper Cable"),
+                named(30614, "HV Cable"), named(30618, "Glass Fibre Cable"));
+
+        assertSameGroup(named(30622, "Empty Cell"), named(30623, "Water Cell"),
+                named(30624, "Lava Cell"), named(30625, "Bio Cell"), named(30626, "H. Coal Cell"),
+                named(30627, "Uranium Cell"), named(30628, "Near-depleted Uranium Cell"),
+                named(30629, "Depleted Isotope Cell"));
+        assertSameGroup(named(30630, "Copper to Iron Chest Upgrade"),
+                named(30631, "Copper to Silver Chest Upgrade"), named(30632, "Silver to Gold Chest Upgrade"),
+                named(30633, "Iron to Gold Chest Upgrade"), named(30634, "Gold to Diamond Chest Upgrade"),
+                named(30635, "Diamond to Crystal Chest Upgrade"));
+    }
+
+    @Test
+    void groupsApprovedEe2Families() {
+        assertSameGroup(named(30700, "Alchemical Coal"), named(30701, "Mobius Fuel"),
+                named(30702, "Aeternalis Fuel"));
+        assertSameGroup(named(30703, "Soul Stone"), named(30704, "Body Stone"),
+                named(30705, "Life Stone"), named(30706, "Mind Stone"));
+        assertSameGroup(named(30707, "Evertide Amulet"), named(30708, "Volcanite Amulet"));
+        assertSameGroup(named(30709, "Destruction Catalyst"), named(30710, "Hyperkinetic Lens"),
+                named(30711, "Catalytic Lens"));
+        assertSameGroup(named(30712, "Iron Band"), named(30713, "Black Hole Band"),
+                named(30714, "Ring of Ignition"), named(30715, "Zero Ring"),
+                named(30716, "Ring of Arcana"), named(30717, "Void Ring"),
+                named(30718, "Swiftwolf's Rending Gale"), named(30719, "Harvest Goddess Band"));
+    }
+
+    @Test
+    void groupsApprovedBuildCraftAndRedPowerSubsystems() {
+        assertSameGroup(named(30800, "Mining Well"), named(30801, "Quarry"), named(30802, "Mining Pipe"));
+        assertSameGroup(named(30803, "Builder"), named(30804, "Filler"),
+                named(30805, "Architect Table"), named(30806, "Blueprint Library"));
+
+        assertSameGroup(named(30807, "RS Latch"), named(30808, "Toggle Latch"),
+                named(30809, "Transparent Latch"));
+        assertSameGroup(named(30810, "State Cell"), named(30811, "Invert Cell"),
+                named(30812, "Non-Invert Cell"), named(30813, "Null Cell"));
+        assertSameGroup(named(30814, "Timer"), named(30815, "Sequencer"), named(30816, "Repeater"),
+                named(30817, "Pulse Former"), named(30818, "Synchronizer"));
+        assertSameGroup(named(30819, "Transposer"), named(30820, "Filter"), named(30821, "Retriever"),
+                named(30822, "Regulator"), named(30823, "Item Detector"), named(30824, "Buffer"),
+                named(30825, "Relay"));
+        assertSameGroup(named(30826, "Deployer"), named(30827, "Block Breaker"),
+                named(30828, "Ejector"), named(30829, "Assembler"), named(30830, "Sorting Machine"));
+        assertSameGroup(named(30831, "Backplane"), named(30832, "8K RAM Module"),
+                named(30833, "Central Processing Unit"), named(30834, "IO Expander"),
+                named(30835, "Monitor"), named(30836, "Disk Drive"), named(30837, "Ribbon Cable"));
+        assertSameGroup(named(30838, "Blulectric Furnace"), named(30839, "Blulectric Alloy Furnace"));
+    }
+
+    @Test
+    void groupsApprovedThaumcraftAndWirelessSubsystems() {
+        assertSameGroup(named(30900, "Vis Conduit"), named(30901, "Vis Filter"), named(30902, "Vis Valve"));
+        assertSameGroup(named(30903, "Vis Pump"), named(30904, "Vis Condenser"),
+                named(30905, "Vis Storage Tank"));
+        assertSameGroup(named(30906, "Wireless Transceiver"), named(30907, "Blaze Transceiver"));
+        assertSameGroup(named(30908, "Receiver Dish"), named(30909, "Blaze Receiver Dish"));
+        assertSameGroup(named(30910, "Wireless Sniffer"), named(30911, "Private Sniffer"));
+        assertSameGroup(named(30912, "Wireless Remote"), named(30913, "Wireless Map"),
+                named(30914, "Wireless Tracker"), named(30915, "Triangulator"));
+    }
+
+    @Test
     void readsIc2StyleDirectRecipeImplementations() {
         ForeignRecipe shaped = new ForeignRecipe(new ItemStack(Item.pickaxeSteel),
                 new ItemStack[]{new ItemStack(Item.ingotIron), new ItemStack(Item.ingotIron),
@@ -198,6 +275,12 @@ final class LegacyRecipeGroupTest {
     private static void assertSameGroup(ItemStack first, ItemStack... others) {
         String expected = LegacyRecipeGroup.key(first);
         for (ItemStack other : others) assertEquals(expected, LegacyRecipeGroup.key(other));
+    }
+
+    private static void assertAllDifferent(ItemStack... stacks) {
+        Set<String> keys = new HashSet<String>();
+        for (ItemStack stack : stacks) keys.add(LegacyRecipeGroup.key(stack));
+        assertEquals(stacks.length, keys.size());
     }
 
     private static final class NamedItem extends Item {
