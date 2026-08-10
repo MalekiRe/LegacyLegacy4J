@@ -60,13 +60,16 @@ public final class LegacyCraftingGroups {
         Item item = output.getItem();
         if (item instanceof ItemArmor) return "armor:" + ((ItemArmor) item).armorType;
 
+        String normalized = normalizedName(output);
+        String namedFamily = namedVariantFamily(normalized);
+        if (namedFamily != null) return namedFamily;
+
         String tool = toolFamily(output);
         if (tool != null) return "tool:" + tool;
 
-        String armor = namedArmorFamily(normalizedName(output));
+        String armor = namedArmorFamily(normalized);
         if (armor != null) return "armor-name:" + armor;
 
-        String normalized = normalizedName(output);
         boolean changed;
         do {
             changed = false;
@@ -79,6 +82,20 @@ public final class LegacyCraftingGroups {
             }
         } while (changed);
         return normalized.length() == 0 ? normalizedName(output) : normalized;
+    }
+
+    private static String namedVariantFamily(String name) {
+        int jacket = name.indexOf(" jacketed ");
+        if (jacket > 0) return "jacketed:" + name.substring(0, jacket);
+
+        if (name.equals("energy collector") || name.startsWith("collector mk")) {
+            return "ee2:energy-collector";
+        }
+        if (name.equals("anti matter relay") || name.startsWith("relay mk")) {
+            return "ee2:anti-matter-relay";
+        }
+        if (name.endsWith(" engine")) return "machine:engine";
+        return null;
     }
 
     public static boolean isToolLike(ItemStack output) {

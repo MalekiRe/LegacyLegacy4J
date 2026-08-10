@@ -647,6 +647,30 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
         return "";
     }
 
+    /** Complete recipe-family inventory used to audit real ModLoader-era packs. */
+    public String legacyVisualDescribeRecipeFamilies() {
+        int originalCategory = categoryIndex;
+        int originalGroup = groupIndex;
+        int originalVariant = variantIndex;
+        StringBuilder result = new StringBuilder();
+        List<LegacyCraftingTab> tabs = availableTabs();
+        for (int tab = 0; tab < tabs.size(); tab++) {
+            categoryIndex = tab;
+            for (LegacyRecipeGroup family : visibleGroups()) {
+                result.append(tabs.get(tab).id).append('\t').append(family.key).append('\t');
+                for (int member = 0; member < family.recipes.size(); member++) {
+                    if (member > 0) result.append(" | ");
+                    result.append(recipeName(family.recipes.get(member)));
+                }
+                result.append(System.getProperty("line.separator"));
+            }
+        }
+        categoryIndex = originalCategory;
+        groupIndex = originalGroup;
+        variantIndex = originalVariant;
+        return result.toString();
+    }
+
     private void setCategory(int index) {
         categoryIndex = index;
         groupIndex = 0;

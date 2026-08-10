@@ -177,7 +177,8 @@ public final class LegacyVisualScenarioRunner {
             setBlock(minecraft, Block.workbench.blockID);
             screen = new LegacyCraftingScreen(new ContainerWorkbench(
                     minecraft.thePlayer.inventory, minecraft.theWorld, FIXTURE_X, FIXTURE_Y, FIXTURE_Z));
-        } else if ("crafting_modded_tools".equals(screenScenario)) {
+        } else if ("crafting_modded_tools".equals(screenScenario)
+                || "crafting_modded_families".equals(screenScenario)) {
             setBlock(minecraft, Block.workbench.blockID);
             screen = new LegacyCraftingScreen(new ContainerWorkbench(
                     minecraft.thePlayer.inventory, minecraft.theWorld, FIXTURE_X, FIXTURE_Y, FIXTURE_Z));
@@ -203,6 +204,8 @@ public final class LegacyVisualScenarioRunner {
             String members = ((LegacyCraftingScreen) screen).legacyVisualSelectRecipeFamily("tool:pickaxe");
             if (members.length() == 0) throw new IllegalStateException("No pickaxe recipe family found");
             writeMetadata(scenario, "tool:pickaxe = " + members + System.getProperty("line.separator"));
+        } else if ("crafting_modded_families".equals(screenScenario)) {
+            writeMetadata(scenario, ((LegacyCraftingScreen) screen).legacyVisualDescribeRecipeFamilies());
         }
         if (scenario.endsWith("_mouse_hover")) movePointerToFirstSlot(minecraft, screen);
         else if (scenario.endsWith("_controller_hover")) showControllerFocus(screen);

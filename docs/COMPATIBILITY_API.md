@@ -61,6 +61,12 @@ existing dropdowns. Class/name fallbacks cover common ModLoader-era tools such
 as sickles, handsaws, drills and wrenches, while material prefixes collapse
 families such as RedPower gem tools and BuildCraft pipes.
 
+Pack-specific semantic families are resolved before generic prefix stripping.
+The bundled rules group RedPower jacketed wire/cable/bluewire by jacket
+material, EE2 collector and anti-matter relay tiers by machine, and BuildCraft
+engines by engine type. This ordering prevents similarly named but unrelated
+items, such as RedPower's plain Relay, from entering an EE2 tier dropdown.
+
 A mod can override the inferred family without depending on screen internals:
 
 ```java

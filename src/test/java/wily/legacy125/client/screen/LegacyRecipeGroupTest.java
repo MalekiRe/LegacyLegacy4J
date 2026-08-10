@@ -44,6 +44,35 @@ final class LegacyRecipeGroupTest {
     }
 
     @Test
+    void groupsRedPowerJacketedVariantsByTheirJacketMaterial() {
+        assertSameGroup(named(30006, "Snow Jacketed Wire"),
+                named(30007, "Snow Jacketed Cable"),
+                named(30008, "Snow Jacketed Bluewire"));
+        assertSameGroup(named(30009, "Pumpkin Jacketed Wire"),
+                named(30010, "Pumpkin Jacketed Cable"),
+                named(30011, "Pumpkin Jacketed Bluewire"));
+        assertSameGroup(named(30012, "Ruby Block Jacketed Wire"),
+                named(30013, "Ruby Block Jacketed Cable"),
+                named(30014, "Ruby Block Jacketed Bluewire"));
+
+        assertFalse(LegacyRecipeGroup.key(named(30006, "Snow Jacketed Wire")).equals(
+                LegacyRecipeGroup.key(named(30009, "Pumpkin Jacketed Wire"))));
+    }
+
+    @Test
+    void groupsEe2MkMachinesAndBuildCraftEngines() {
+        assertSameGroup(named(30015, "Energy Collector"),
+                named(30016, "Collector MK2"), named(30017, "Collector MK3"));
+        assertSameGroup(named(30018, "Anti-Matter Relay"),
+                named(30019, "Relay MK2"), named(30020, "Relay MK3"));
+        assertSameGroup(named(30021, "Redstone Engine"),
+                named(30022, "Steam Engine"), named(30023, "Combustion Engine"));
+
+        assertFalse(LegacyRecipeGroup.key(named(30024, "Relay")).equals(
+                LegacyRecipeGroup.key(named(30019, "Relay MK2"))));
+    }
+
+    @Test
     void readsIc2StyleDirectRecipeImplementations() {
         ForeignRecipe shaped = new ForeignRecipe(new ItemStack(Item.pickaxeSteel),
                 new ItemStack[]{new ItemStack(Item.ingotIron), new ItemStack(Item.ingotIron),
@@ -108,6 +137,11 @@ final class LegacyRecipeGroupTest {
 
     private static ItemStack named(int id, String name) {
         return new ItemStack(new NamedItem(id, name));
+    }
+
+    private static void assertSameGroup(ItemStack first, ItemStack... others) {
+        String expected = LegacyRecipeGroup.key(first);
+        for (ItemStack other : others) assertEquals(expected, LegacyRecipeGroup.key(other));
     }
 
     private static final class NamedItem extends Item {
