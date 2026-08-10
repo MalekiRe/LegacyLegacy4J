@@ -26,13 +26,14 @@ public abstract class LegacyScreen extends GuiScreen implements LegacyController
     public final void initGui() {
         controlList.clear();
         focusedIndex = 0;
-        controllerFocusVisible = false;
+        controllerFocusVisible = true;
         panelLeft = Math.max(12, width / 2 - 190);
         panelRight = Math.min(width - 12, width / 2 + 190);
         panelTop = Math.max(18, height / 2 - 112);
         panelBottom = Math.min(height - 22, height / 2 + 112);
         addLegacyControls();
         ensureFocusable(1);
+        updateButtonFocus();
     }
 
     protected abstract void addLegacyControls();

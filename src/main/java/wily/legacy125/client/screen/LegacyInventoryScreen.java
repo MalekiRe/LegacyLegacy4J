@@ -61,6 +61,7 @@ public final class LegacyInventoryScreen extends LegacyGuiContainer125 implement
     public void initGui() {
         super.initGui();
         focusedSlot = inventorySlots.inventorySlots.size() > 9 ? 9 : SlotNavigator.firstVisible(inventorySlots.inventorySlots);
+        controllerFocusVisible = true;
     }
 
     @Override
