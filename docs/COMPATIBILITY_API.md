@@ -62,10 +62,11 @@ as sickles, handsaws, drills and wrenches, while material prefixes collapse
 families such as RedPower gem tools and BuildCraft pipes.
 
 Pack-specific semantic families are resolved before generic prefix stripping.
-The bundled rules group RedPower jacketed wire/cable/bluewire by jacket
-material, EE2 collector and anti-matter relay tiers by machine, and BuildCraft
-engines by engine type. This ordering prevents similarly named but unrelated
-items, such as RedPower's plain Relay, from entering an EE2 tier dropdown.
+The bundled rules place every RedPower jacketed wire/cable/bluewire variant in
+one family, group EE2 collector and anti-matter relay tiers by machine, and
+group BuildCraft engines by engine type. This ordering prevents similarly named
+but unrelated items, such as RedPower's plain Relay, from entering an EE2 tier
+dropdown.
 The Ye Olde Times profile also recognizes Compact Solar tiers, IC2 generators,
 storage, transformers, scanners, TFBPs and upgrades, EE2 matter tiers and Klein
 Stars, Iron Chests, Thaumcraft vis ores, RedPower gate/tube families, Wireless

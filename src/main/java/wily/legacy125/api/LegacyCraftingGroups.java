@@ -86,7 +86,7 @@ public final class LegacyCraftingGroups {
 
     private static String namedVariantFamily(ItemStack output, String name) {
         int jacket = name.indexOf(" jacketed ");
-        if (jacket > 0) return "jacketed:" + name.substring(0, jacket);
+        if (jacket > 0) return "redpower:jacketed";
 
         if (name.equals("energy collector") || name.startsWith("collector mk")) {
             return "ee2:energy-collector";

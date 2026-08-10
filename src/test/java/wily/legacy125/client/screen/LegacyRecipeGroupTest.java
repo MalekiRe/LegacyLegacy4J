@@ -44,7 +44,7 @@ final class LegacyRecipeGroupTest {
     }
 
     @Test
-    void groupsRedPowerJacketedVariantsByTheirJacketMaterial() {
+    void groupsEveryRedPowerJacketedVariantTogether() {
         assertSameGroup(named(30006, "Snow Jacketed Wire"),
                 named(30007, "Snow Jacketed Cable"),
                 named(30008, "Snow Jacketed Bluewire"));
@@ -55,8 +55,9 @@ final class LegacyRecipeGroupTest {
                 named(30013, "Ruby Block Jacketed Cable"),
                 named(30014, "Ruby Block Jacketed Bluewire"));
 
-        assertFalse(LegacyRecipeGroup.key(named(30006, "Snow Jacketed Wire")).equals(
-                LegacyRecipeGroup.key(named(30009, "Pumpkin Jacketed Wire"))));
+        assertSameGroup(named(30006, "Snow Jacketed Wire"),
+                named(30009, "Pumpkin Jacketed Wire"),
+                named(30012, "Ruby Block Jacketed Wire"));
     }
 
     @Test
