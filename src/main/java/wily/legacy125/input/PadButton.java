@@ -1,0 +1,6 @@
+package wily.legacy125.input;
+
+public enum PadButton {
+    A, B, X, Y, LEFT_BUMPER, RIGHT_BUMPER, BACK, START, LEFT_STICK, RIGHT_STICK,
+    DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT, LEFT_TRIGGER, RIGHT_TRIGGER
+}

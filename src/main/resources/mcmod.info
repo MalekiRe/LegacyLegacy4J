@@ -1,0 +1,11 @@
+[
+  {
+    "modid": "legacy4j125",
+    "name": "Legacy4J 1.2.5 Backport",
+    "description": "Legacy Console-style controller support, interfaces, crafting and HUD for Minecraft 1.2.5.",
+    "version": "0.4.0",
+    "mcversion": "1.2.5",
+    "url": "https://github.com/Wilyicaro/Legacy-Minecraft",
+    "authors": ["Legacy4J contributors", "1.2.5 backport contributors"]
+  }
+]

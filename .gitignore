@@ -1,0 +1,15 @@
+.gradle/
+build/
+run/
+*.iml
+.idea/
+out/
+logs/
+crash-reports/
+__pycache__/
+*.py[cod]
+
+# Local upstream checkout and generated visual reports. The fixed baseline
+# screenshots under reference/screenshots are intentionally versioned.
+reference/Legacy-Minecraft/
+reference/comparisons/

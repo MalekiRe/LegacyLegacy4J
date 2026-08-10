@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "root": "..",
+  "image_size": [854, 480],
+  "difference_threshold": 24,
+  "minimum_cluster_pixels": 6,
+  "cluster_padding": 3,
+  "maximum_clusters_per_region": 8,
+  "scenarios": {
+    "inventory": {
+      "reference": "reference/screenshots/upstream-inventory-survival.png",
+      "candidate": "build/screenshots/backport-inventory-final.png",
+      "regions": {
+        "panel": [296, 100, 556, 380],
+        "equipment": [308, 116, 512, 222],
+        "top_bar": [296, 100, 556, 116],
+        "label": [308, 228, 390, 248],
+        "main_slots": [308, 250, 544, 330],
+        "hotbar": [308, 338, 544, 358]
+      }
+    },
+    "crafting_player": {
+      "reference": "reference/screenshots/upstream-crafting-survival.png",
+      "candidate": "build/screenshots/backport-crafting-verified-aligned.png",
+      "regions": {
+        "whole_ui": [180, 94, 722, 382],
+        "tabs": [216, 94, 722, 160],
+        "tab_panel_seam": [210, 132, 722, 154],
+        "top_bar": [216, 140, 722, 176],
+        "recipe_strip": [230, 176, 708, 216],
+        "left_panel": [230, 228, 464, 370],
+        "right_panel": [472, 228, 706, 370]
+      }
+    },
+    "crafting_table": {
+      "reference": "reference/screenshots/upstream-crafting-table.png",
+      "candidate": "build/screenshots/backport-crafting-table-tabs-behind.png",
+      "regions": {
+        "whole_ui": [180, 90, 722, 390],
+        "tabs": [216, 90, 722, 160],
+        "tab_panel_seam": [210, 132, 722, 156],
+        "top_bar": [216, 140, 722, 176],
+        "recipe_strip": [230, 176, 708, 216],
+        "left_panel": [230, 228, 464, 378],
+        "right_panel": [472, 228, 706, 378]
+      }
+    },
+    "chest": {
+      "reference": "reference/screenshots/upstream-chest.png",
+      "candidate": "build/screenshots/backport-chest-current.png",
+      "regions": {
+        "whole_ui": [296, 112, 556, 370],
+        "top_bar": [296, 112, 556, 140],
+        "storage": [308, 140, 544, 220],
+        "inventory_label": [308, 220, 410, 244],
+        "inventory": [308, 242, 544, 322],
+        "hotbar": [308, 330, 544, 360]
+      }
+    },
+    "furnace": {
+      "reference": "reference/screenshots/upstream-furnace.png",
+      "candidate": "build/screenshots/backport-furnace.png",
+      "regions": {
+        "whole_ui": [296, 94, 556, 384],
+        "top_bar": [296, 94, 556, 124],
+        "process": [344, 120, 542, 228],
+        "inventory_label": [308, 226, 410, 252],
+        "inventory": [308, 254, 544, 334],
+        "hotbar": [308, 342, 544, 372]
+      }
+    },
+    "pause": {
+      "reference": "reference/screenshots/upstream-pause.png",
+      "candidate": "build/screenshots/backport-pause-survival.png",
+      "regions": {
+        "logo": [280, 6, 574, 72],
+        "button_stack": [286, 104, 568, 328],
+        "bottom_hint": [58, 418, 174, 450]
+      }
+    },
+    "help_options": {
+      "reference": "reference/screenshots/upstream-help-options.png",
+      "candidate": "build/visual-captures/help_options.png",
+      "regions": {
+        "logo": [280, 6, 574, 72],
+        "button_stack": [286, 104, 568, 370],
+        "bottom_hint": [58, 418, 174, 450]
+      }
+    },
+    "settings": {
+      "reference": "reference/screenshots/upstream-settings.png",
+      "candidate": "build/visual-captures/settings.png",
+      "regions": {
+        "logo": [280, 6, 574, 72],
+        "button_stack": [286, 104, 568, 328],
+        "bottom_hint": [58, 418, 190, 450]
+      }
+    },
+    "play": {
+      "reference": "reference/screenshots/upstream-play.png",
+      "candidate": "build/visual-captures/play.png",
+      "regions": {
+        "whole_ui": [210, 66, 644, 414],
+        "tabs": [220, 66, 634, 126],
+        "tab_panel_seam": [220, 92, 634, 126],
+        "panel": [220, 96, 634, 414]
+      }
+    },
+    "create_world": {
+      "reference": "reference/screenshots/upstream-create-world.png",
+      "candidate": "build/visual-captures/create_world.png",
+      "regions": {
+        "whole_ui": [230, 40, 624, 440],
+        "panel": [236, 48, 618, 430]
+      }
+    },
+    "title": {
+      "reference": "reference/screenshots/upstream-title-854x480.png",
+      "candidate": "build/screenshots/backport-title-font.png",
+      "regions": {
+        "logo": [278, 4, 576, 102],
+        "button_stack": [286, 104, 568, 352],
+        "bottom_left": [0, 448, 180, 480],
+        "bottom_center": [350, 448, 504, 480],
+        "bottom_right": [674, 448, 854, 480]
+      }
+    }
+  }
+}

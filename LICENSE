@@ -1,0 +1,18 @@
+Legacy4J 1.2.5 Backport licensing
+
+Copyright (c) 2026 Legacy4J 1.2.5 backport contributors
+
+Original contributions to this backport are available under your choice of:
+
+    MIT OR Apache-2.0
+
+The complete license texts are provided in:
+
+    LICENSES/MIT.txt
+    LICENSES/Apache-2.0.txt
+
+SPDX-License-Identifier: MIT OR Apache-2.0
+
+This licensing choice does not relicense third-party material. Portions and
+assets adapted from upstream Legacy4J remain available under upstream's MIT
+license. See THIRD_PARTY_NOTICES.md for the applicable attribution and terms.
