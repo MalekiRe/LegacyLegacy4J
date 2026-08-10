@@ -29,7 +29,32 @@ final class LegacyCraftingTabsTest {
         assertCategory("structures", new ItemStack(Block.chest));
     }
 
+    @Test
+    void classifiesPlainItemModToolsBySemanticFamily() {
+        assertCategory("tools", named(30010, "Ruby Sickle"));
+        assertCategory("tools", named(30011, "Diamond Handsaw"));
+        assertCategory("tools", named(30012, "Electric Wrench"));
+    }
+
     private static void assertCategory(String id, ItemStack output) {
         assertEquals(id, LegacyCraftingTabs.categoryFor(output).id);
+    }
+
+    private static ItemStack named(int id, String name) {
+        return new ItemStack(new NamedItem(id, name));
+    }
+
+    private static final class NamedItem extends Item {
+        private final String displayName;
+
+        private NamedItem(int id, String displayName) {
+            super(id);
+            this.displayName = displayName;
+        }
+
+        @Override
+        public String getItemDisplayName(ItemStack stack) {
+            return displayName;
+        }
     }
 }

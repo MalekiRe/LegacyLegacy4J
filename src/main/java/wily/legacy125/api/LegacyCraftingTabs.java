@@ -2,7 +2,6 @@ package wily.legacy125.api;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemBoat;
 import net.minecraft.src.ItemBow;
@@ -73,10 +72,10 @@ public final class LegacyCraftingTabs {
         if (output == null || output.getItem() == null) return "structures";
         Item item = output.getItem();
         if (item == Item.stick || blockId(output) == id(Block.trapdoor)) return "structures";
-        if (item instanceof ItemArmor) return "armour";
+        if (LegacyCraftingGroups.isArmorLike(output)) return "armour";
         if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemHoe
                 || item instanceof ItemBow || item instanceof ItemShears || item instanceof ItemFishingRod
-                || item instanceof ItemFlintAndSteel) return "tools";
+                || item instanceof ItemFlintAndSteel || LegacyCraftingGroups.isToolLike(output)) return "tools";
         if (item instanceof ItemFood || item instanceof ItemSeeds || item == Item.sugar
                 || item == Item.wheat || item == Item.bowlSoup || item == Item.cake) return "food";
         if (item instanceof ItemBoat || item instanceof ItemMinecart || item == Item.compass

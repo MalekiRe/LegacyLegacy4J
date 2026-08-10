@@ -1,11 +1,10 @@
 package wily.legacy125.client.screen;
 
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.ItemArmor;
+import wily.legacy125.api.LegacyCraftingGroups;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /** Variants that occupy one Legacy Console recipe tile. */
 final class LegacyRecipeGroup {
@@ -20,29 +19,20 @@ final class LegacyRecipeGroup {
         return recipes.get(Math.max(0, Math.min(recipes.size() - 1, variant)));
     }
 
-    static String key(ItemStack output) {
-        if (output.getItem() instanceof ItemArmor) {
-            return "armor:" + ((ItemArmor) output.getItem()).armorType;
+    void add(LegacyRecipe recipe) {
+        for (LegacyRecipe existing : recipes) {
+            if (sameVariant(existing.output, recipe.output)) return;
         }
-        String name = output.getItem().getItemDisplayName(output);
-        String normalized = name.toLowerCase(Locale.ENGLISH).trim();
-        String[] prefixes = {
-                "wooden ", "wood ", "stone ", "iron ", "diamond ", "golden ", "gold ",
-                "leather ", "chainmail ", "chain ", "oak ", "spruce ", "birch ", "jungle ",
-                "white ", "orange ", "magenta ", "light blue ", "yellow ", "lime ", "pink ",
-                "gray ", "light gray ", "cyan ", "purple ", "blue ", "brown ", "green ", "red ", "black "
-        };
-        boolean changed;
-        do {
-            changed = false;
-            for (String prefix : prefixes) {
-                if (normalized.startsWith(prefix)) {
-                    normalized = normalized.substring(prefix.length());
-                    changed = true;
-                    break;
-                }
-            }
-        } while (changed);
-        return normalized.length() == 0 ? name.toLowerCase(Locale.ENGLISH) : normalized;
+        recipes.add(recipe);
+    }
+
+    static String key(ItemStack output) {
+        return LegacyCraftingGroups.key(output);
+    }
+
+    private static boolean sameVariant(ItemStack left, ItemStack right) {
+        return left.itemID == right.itemID
+                && left.getItemDamage() == right.getItemDamage()
+                && left.stackSize == right.stackSize;
     }
 }

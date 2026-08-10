@@ -18,13 +18,16 @@ final class LegacyRecipe {
     final ItemStack[] cells;
     final int width;
     final int height;
+    final boolean shapeless;
 
-    private LegacyRecipe(IRecipe recipe, ItemStack output, ItemStack[] cells, int width, int height) {
+    private LegacyRecipe(IRecipe recipe, ItemStack output, ItemStack[] cells, int width, int height,
+                         boolean shapeless) {
         this.recipe = recipe;
         this.output = output;
         this.cells = cells;
         this.width = width;
         this.height = height;
+        this.shapeless = shapeless;
     }
 
     static LegacyRecipe read(IRecipe recipe) {
@@ -32,7 +35,8 @@ final class LegacyRecipe {
         try {
             if (recipe instanceof ShapedRecipes) return readShaped(recipe);
             if (recipe instanceof ShapelessRecipes) return readShapeless(recipe);
-        } catch (ReflectiveOperationException ignored) {
+            return readForeign(recipe);
+        } catch (Exception ignored) {
         }
         return null;
     }
@@ -52,7 +56,7 @@ final class LegacyRecipe {
         int width = dimensions.get(0);
         int height = dimensions.get(1);
         if (width <= 0 || height <= 0 || width * height != ingredients.length) return null;
-        return new LegacyRecipe(recipe, recipe.getRecipeOutput().copy(), copy(ingredients), width, height);
+        return new LegacyRecipe(recipe, recipe.getRecipeOutput().copy(), copy(ingredients), width, height, false);
     }
 
     private static LegacyRecipe readShapeless(IRecipe recipe) throws ReflectiveOperationException {
@@ -69,11 +73,75 @@ final class LegacyRecipe {
             if (!(value instanceof ItemStack)) return null;
             cells[i] = ((ItemStack) value).copy();
         }
-        return new LegacyRecipe(recipe, recipe.getRecipeOutput().copy(), cells, cells.length, 1);
+        return new LegacyRecipe(recipe, recipe.getRecipeOutput().copy(), cells, cells.length, 1, true);
+    }
+
+    /**
+     * Reads ModLoader-era IRecipe implementations such as IC2 AdvRecipe and
+     * AdvShapelessRecipe without linking against those optional classes.
+     */
+    private static LegacyRecipe readForeign(IRecipe recipe) throws ReflectiveOperationException {
+        if (booleanField(recipe, "hidden")) return null;
+
+        ItemStack[] ingredients = null;
+        for (Field field : fields(recipe.getClass())) {
+            if (Modifier.isStatic(field.getModifiers())) continue;
+            field.setAccessible(true);
+            if (field.getType() == ItemStack[].class) {
+                ItemStack[] candidate = (ItemStack[]) field.get(recipe);
+                if (candidate != null && (ingredients == null || candidate.length > ingredients.length)) {
+                    ingredients = candidate;
+                }
+            }
+        }
+        if (ingredients == null || ingredients.length == 0) return null;
+
+        boolean shapeless = recipe.getClass().getSimpleName().toLowerCase().contains("shapeless");
+        int width = intField(recipe, "width");
+        int height = intField(recipe, "height");
+        if (shapeless || width <= 0) {
+            width = ingredients.length;
+            height = 1;
+            shapeless = true;
+        } else {
+            if (height <= 0 && ingredients.length % width == 0) height = ingredients.length / width;
+            if (height <= 0 || width * height != ingredients.length) return null;
+        }
+        return new LegacyRecipe(recipe, recipe.getRecipeOutput().copy(), copy(ingredients),
+                width, height, shapeless);
+    }
+
+    private static List<Field> fields(Class<?> type) {
+        List<Field> result = new ArrayList<Field>();
+        while (type != null && type != Object.class) {
+            Collections.addAll(result, type.getDeclaredFields());
+            type = type.getSuperclass();
+        }
+        return result;
+    }
+
+    private static boolean booleanField(Object value, String name) throws IllegalAccessException {
+        for (Field field : fields(value.getClass())) {
+            if (Modifier.isStatic(field.getModifiers()) || field.getType() != Boolean.TYPE
+                    || !field.getName().toLowerCase().contains(name)) continue;
+            field.setAccessible(true);
+            return field.getBoolean(value);
+        }
+        return false;
+    }
+
+    private static int intField(Object value, String name) throws IllegalAccessException {
+        for (Field field : fields(value.getClass())) {
+            if (Modifier.isStatic(field.getModifiers()) || field.getType() != Integer.TYPE
+                    || !field.getName().toLowerCase().contains(name)) continue;
+            field.setAccessible(true);
+            return field.getInt(value);
+        }
+        return -1;
     }
 
     boolean fits(int gridWidth, int gridHeight) {
-        if (recipe instanceof ShapelessRecipes) return cells.length <= gridWidth * gridHeight;
+        if (shapeless) return cells.length <= gridWidth * gridHeight;
         return width <= gridWidth && height <= gridHeight;
     }
 
@@ -116,7 +184,7 @@ final class LegacyRecipe {
 
     ItemStack[] layout(int gridWidth, int gridHeight) {
         ItemStack[] result = new ItemStack[gridWidth * gridHeight];
-        if (recipe instanceof ShapelessRecipes) {
+        if (shapeless) {
             for (int i = 0; i < cells.length && i < result.length; i++) result[i] = copy(cells[i]);
         } else {
             for (int y = 0; y < height; y++) {

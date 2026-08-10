@@ -53,6 +53,31 @@ LegacyCraftingTabs.register(new LegacyCraftingTab(
 
 Registered categories take precedence over the built-in classifier, including its broad Structures fallback. Recipes remain the original `IRecipe` objects and crafting still flows through the live player or workbench container. The vertical rail contains only Crafting on 1.2.5; upstream's banner, firework and dye-custom recipe types depend on game systems that did not exist yet.
 
+### Recipe families
+
+`LegacyCraftingGroups` groups outputs by semantic family. Vanilla subclasses
+automatically place modded pickaxes, axes, shovels, hoes and swords into their
+existing dropdowns. Class/name fallbacks cover common ModLoader-era tools such
+as sickles, handsaws, drills and wrenches, while material prefixes collapse
+families such as RedPower gem tools and BuildCraft pipes.
+
+A mod can override the inferred family without depending on screen internals:
+
+```java
+LegacyCraftingGroups.registerFirst(new LegacyCraftingGroups.Resolver() {
+    public String resolve(ItemStack output) {
+        return output.itemID == MyMod.part.shiftedIndex
+                ? "my_mod:machine_parts" : null;
+    }
+});
+```
+
+The bridge also reflectively reads fixed-output `IRecipe` implementations such
+as IC2 `AdvRecipe` and `AdvShapelessRecipe`. Dynamic recipes whose output exists
+only after inspecting a live crafting grid (for example RedPower cover cutting)
+remain available through the normal grid but cannot be enumerated as a finite
+recipe-book list.
+
 ## Compatibility rule
 
 Port upstream algorithms and state transitions where 1.2.5 has the same invariant. Reimplement the platform edge where modern Minecraft types do not exist. In particular:

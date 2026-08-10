@@ -177,6 +177,10 @@ public final class LegacyVisualScenarioRunner {
             setBlock(minecraft, Block.workbench.blockID);
             screen = new LegacyCraftingScreen(new ContainerWorkbench(
                     minecraft.thePlayer.inventory, minecraft.theWorld, FIXTURE_X, FIXTURE_Y, FIXTURE_Z));
+        } else if ("crafting_modded_tools".equals(screenScenario)) {
+            setBlock(minecraft, Block.workbench.blockID);
+            screen = new LegacyCraftingScreen(new ContainerWorkbench(
+                    minecraft.thePlayer.inventory, minecraft.theWorld, FIXTURE_X, FIXTURE_Y, FIXTURE_Z));
         } else if ("chest".equals(screenScenario)) {
             setBlock(minecraft, Block.chest.blockID);
             TileEntityChest chest = (TileEntityChest) minecraft.theWorld.getBlockTileEntity(
@@ -195,6 +199,11 @@ public final class LegacyVisualScenarioRunner {
             throw new IllegalArgumentException("Unknown visual scenario: " + scenario);
         }
         minecraft.displayGuiScreen(screen);
+        if ("crafting_modded_tools".equals(screenScenario)) {
+            String members = ((LegacyCraftingScreen) screen).legacyVisualSelectRecipeFamily("tool:pickaxe");
+            if (members.length() == 0) throw new IllegalStateException("No pickaxe recipe family found");
+            writeMetadata(scenario, "tool:pickaxe = " + members + System.getProperty("line.separator"));
+        }
         if (scenario.endsWith("_mouse_hover")) movePointerToFirstSlot(minecraft, screen);
         else if (scenario.endsWith("_controller_hover")) showControllerFocus(screen);
     }
@@ -238,6 +247,22 @@ public final class LegacyVisualScenarioRunner {
             // neutral reference captures. LWJGL coordinates start at bottom.
             Mouse.setCursorPosition(minecraft.displayWidth - 4, minecraft.displayHeight / 2);
         } catch (RuntimeException ignored) {
+        }
+    }
+
+    private void writeMetadata(String scenario, String contents) {
+        try {
+            if (!outputDirectory.isDirectory() && !outputDirectory.mkdirs()) {
+                throw new IllegalStateException("Cannot create " + outputDirectory);
+            }
+            java.io.FileWriter writer = new java.io.FileWriter(new File(outputDirectory, scenario + ".txt"));
+            try {
+                writer.write(contents);
+            } finally {
+                writer.close();
+            }
+        } catch (java.io.IOException exception) {
+            throw new RuntimeException("Unable to write visual scenario metadata", exception);
         }
     }
 

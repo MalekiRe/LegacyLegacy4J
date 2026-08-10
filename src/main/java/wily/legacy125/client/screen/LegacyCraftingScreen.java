@@ -551,7 +551,7 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
                 group = new LegacyRecipeGroup(key);
                 grouped.put(key, group);
             }
-            group.recipes.add(recipe);
+            group.add(recipe);
         }
         List<LegacyRecipeGroup> result = new ArrayList<LegacyRecipeGroup>(grouped.values());
         if ("structures".equals(category.id)) Collections.sort(result, new Comparator<LegacyRecipeGroup>() {
@@ -621,6 +621,30 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
             }
         }
         return recipe.output.getItem().getItemDisplayName(recipe.output);
+    }
+
+    /** Deterministic modpack audit hook used by the visual scenario runner. */
+    public String legacyVisualSelectRecipeFamily(String familyKey) {
+        List<LegacyCraftingTab> tabs = availableTabs();
+        for (int tab = 0; tab < tabs.size(); tab++) {
+            categoryIndex = tab;
+            List<LegacyRecipeGroup> groups = visibleGroups();
+            for (int group = 0; group < groups.size(); group++) {
+                LegacyRecipeGroup candidate = groups.get(group);
+                if (!candidate.key.equals(familyKey)) continue;
+                groupIndex = group;
+                variantIndex = 0;
+                inventoryMode = false;
+                StringBuilder members = new StringBuilder();
+                for (LegacyRecipe recipe : candidate.recipes) {
+                    if (members.length() > 0) members.append(" | ");
+                    members.append(recipeName(recipe));
+                    members.append(" [").append(recipe.recipe.getClass().getName()).append(']');
+                }
+                return members.toString();
+            }
+        }
+        return "";
     }
 
     private void setCategory(int index) {
