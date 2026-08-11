@@ -1,6 +1,7 @@
 package wily.legacy125;
 
 import net.minecraft.client.Minecraft;
+import wily.legacy125.input.LegacyCameraTurn125;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +16,8 @@ public final class LegacyConfig {
     public boolean enabled = true;
     public int controllerIndex = -1;
     public float moveDeadZone = 0.20F;
-    public float lookDeadZone = 0.16F;
-    public float lookSensitivity = 2.25F;
+    public float lookDeadZone = 0.34F;
+    public float lookSensitivity = 0.5F;
     public float menuCursorSpeed = 10.0F;
     public boolean invertLookY = false;
     public boolean showTooltips = true;
@@ -97,8 +98,20 @@ public final class LegacyConfig {
             enabled = bool(values, "enabled", enabled);
             controllerIndex = integer(values, "controller_index", controllerIndex);
             moveDeadZone = decimal(values, "move_dead_zone", moveDeadZone);
-            lookDeadZone = decimal(values, "look_dead_zone", lookDeadZone);
-            lookSensitivity = decimal(values, "look_sensitivity", lookSensitivity);
+            if (values.containsKey("right_stick_dead_zone")) {
+                lookDeadZone = decimal(values, "right_stick_dead_zone", lookDeadZone);
+            } else {
+                float legacyLookDeadZone = decimal(values, "look_dead_zone", 0.16F);
+                // Replace only the old untuned default; retain an explicitly changed value.
+                lookDeadZone = Math.abs(legacyLookDeadZone - 0.16F) < 0.0001F
+                        ? 0.34F : legacyLookDeadZone;
+            }
+            if (values.containsKey("controller_sensitivity")) {
+                lookSensitivity = decimal(values, "controller_sensitivity", lookSensitivity);
+            } else if (values.containsKey("look_sensitivity")) {
+                lookSensitivity = LegacyCameraTurn125.migrateDegreesSensitivity(
+                        decimal(values, "look_sensitivity", 2.25F));
+            }
             menuCursorSpeed = decimal(values, "menu_cursor_speed", menuCursorSpeed);
             invertLookY = bool(values, "invert_look_y", invertLookY);
             showTooltips = bool(values, "show_tooltips", showTooltips);
@@ -137,8 +150,8 @@ public final class LegacyConfig {
         values.setProperty("enabled", String.valueOf(enabled));
         values.setProperty("controller_index", String.valueOf(controllerIndex));
         values.setProperty("move_dead_zone", String.valueOf(moveDeadZone));
-        values.setProperty("look_dead_zone", String.valueOf(lookDeadZone));
-        values.setProperty("look_sensitivity", String.valueOf(lookSensitivity));
+        values.setProperty("right_stick_dead_zone", String.valueOf(lookDeadZone));
+        values.setProperty("controller_sensitivity", String.valueOf(lookSensitivity));
         values.setProperty("menu_cursor_speed", String.valueOf(menuCursorSpeed));
         values.setProperty("invert_look_y", String.valueOf(invertLookY));
         values.setProperty("show_tooltips", String.valueOf(showTooltips));

@@ -83,7 +83,7 @@ public final class LegacyControllerSettingsScreen extends LegacyPanelScreen {
         if (id == 1) config.controllerIndex = cycle(config.controllerIndex, direction, controllers.size());
         if (id == 2) config.moveDeadZone = clamp(config.moveDeadZone + direction * 0.05F, 0.0F, 0.9F);
         if (id == 3) config.lookDeadZone = clamp(config.lookDeadZone + direction * 0.05F, 0.0F, 0.9F);
-        if (id == 4) config.lookSensitivity = clamp(config.lookSensitivity + direction * 0.25F, 0.5F, 6.0F);
+        if (id == 4) config.lookSensitivity = clamp(config.lookSensitivity + direction * 0.05F, 0.0F, 1.0F);
         if (id == 5) config.invertLookY = !config.invertLookY;
         if (id == 6) config.hudOpacity = clamp(config.hudOpacity + direction * 0.1F, 0.1F, 1.0F);
         if (id == 7) config.hudMargin = Math.max(0, Math.min(40, config.hudMargin + direction * 2));
@@ -101,7 +101,7 @@ public final class LegacyControllerSettingsScreen extends LegacyPanelScreen {
         setLabel(1, "Controller: " + shorten(controller, 44));
         setLabel(2, "Movement Dead Zone: " + percent(config.moveDeadZone));
         setLabel(3, "Camera Dead Zone: " + percent(config.lookDeadZone));
-        setLabel(4, "Camera Sensitivity: " + oneDecimal(config.lookSensitivity));
+        setLabel(4, "Camera Sensitivity: " + percent(config.lookSensitivity * 2.0F));
         setLabel(5, "Invert Camera Y: " + yesNo(config.invertLookY));
         setLabel(6, "HUD Opacity: " + percent(config.hudOpacity));
         setLabel(7, "HUD Safe Margin: " + config.hudMargin + " px");

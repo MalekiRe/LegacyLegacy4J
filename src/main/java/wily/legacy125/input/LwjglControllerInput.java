@@ -62,7 +62,10 @@ public final class LwjglControllerInput implements ControllerInput {
         }
 
         float[] left = DeadZone.radial(axis(lx), axis(ly), config.moveDeadZone);
-        float[] right = DeadZone.radial(axis(rx), axis(ry), config.lookDeadZone);
+        // Legacy4J smooths each camera axis independently. A radial dead zone makes
+        // vertical stick motion change the effective horizontal turn rate.
+        float rightX = DeadZone.apply(axis(rx), config.lookDeadZone);
+        float rightY = DeadZone.apply(axis(ry), config.lookDeadZone);
         EnumSet<PadButton> down = EnumSet.noneOf(PadButton.class);
         addButton(down, PadButton.A, config.buttonA);
         addButton(down, PadButton.B, config.buttonB);
@@ -107,7 +110,7 @@ public final class LwjglControllerInput implements ControllerInput {
             ControllerDebugLog125.log("buttons controller='" + selected.getName() + "' down=" + down);
             lastLoggedButtons = down.clone();
         }
-        return new ControllerFrame(true, selected.getName(), left[0], left[1], right[0], right[1], down);
+        return new ControllerFrame(true, selected.getName(), left[0], left[1], rightX, rightY, down);
     }
 
     public List<ControllerDescriptor> descriptors() {

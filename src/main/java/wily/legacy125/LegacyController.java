@@ -20,6 +20,7 @@ import wily.legacy125.input.ControllerFrame;
 import wily.legacy125.input.ControllerInput;
 import wily.legacy125.input.ControllerDebugLog125;
 import wily.legacy125.input.LwjglControllerInput;
+import wily.legacy125.input.LegacyCameraTurn125;
 import wily.legacy125.input.LegacyGameplayBindings125;
 import wily.legacy125.input.LegacyMovementInput125;
 import wily.legacy125.input.MenuButtonLatch125;
@@ -49,6 +50,7 @@ public final class LegacyController {
     private final MenuButtonLatch125 menuButtonLatch = new MenuButtonLatch125();
     private final MenuOpeningGate125 menuOpeningGate = new MenuOpeningGate125();
     private final MiningCadence125 miningCadence = new MiningCadence125();
+    private long lastCameraUpdateMillis;
 
     public LegacyController(LegacyConfig config) {
         this(config, new LwjglControllerInput(config));
@@ -78,9 +80,16 @@ public final class LegacyController {
         GameSettings settings = minecraft.gameSettings;
         updateMovementInput(minecraft);
 
-        minecraft.thePlayer.rotationYaw += current.rightX * config.lookSensitivity;
-        float pitch = current.rightY * config.lookSensitivity * (config.invertLookY ? -1.0F : 1.0F);
-        minecraft.thePlayer.rotationPitch = clamp(minecraft.thePlayer.rotationPitch + pitch, -90.0F, 90.0F);
+        long cameraNowMillis = System.currentTimeMillis();
+        int cameraUpdateMillis = LegacyCameraTurn125.elapsedMillis(cameraNowMillis, lastCameraUpdateMillis);
+        lastCameraUpdateMillis = cameraNowMillis;
+        float yaw = LegacyCameraTurn125.turnAmount(current.rightX, config.lookSensitivity, cameraUpdateMillis);
+        float pitch = LegacyCameraTurn125.turnAmount(current.rightY, config.lookSensitivity, cameraUpdateMillis)
+                * (config.invertLookY ? -1.0F : 1.0F);
+        // Entity#setAngles is the 1.2.5 equivalent of modern Player#turn. Besides
+        // clamping pitch, it advances the previous angles used by camera interpolation.
+        // Modern Player#turn adds pitch, whereas 1.2.5 Entity#setAngles subtracts it.
+        minecraft.thePlayer.setAngles(yaw, -pitch);
 
         EnumSet<LegacyGameplayBindings125.Action> actions =
                 LegacyGameplayBindings125.pressed(current, previous);
@@ -354,6 +363,7 @@ public final class LegacyController {
     }
 
     private void releaseGameplay(Minecraft minecraft) {
+        lastCameraUpdateMillis = 0L;
         if (movementInput != null) movementInput.updateController(ControllerFrame.DISCONNECTED, false);
         MinecraftActions.mine(minecraft, false);
     }
