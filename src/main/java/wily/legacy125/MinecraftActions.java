@@ -10,6 +10,8 @@ import java.lang.reflect.Method;
 
 /** Reflection bridge for the few protected/private input entry points in 1.2.5. */
 final class MinecraftActions {
+    private static final Method CLICK_MOUSE = find(Minecraft.class,
+            new String[] {"clickMouse", "func_6243_a", "c"}, Integer.TYPE);
     private static final Method GUI_CLICK = find(GuiScreen.class,
             new String[] {"mouseClicked", "func_565_a", "a"}, Integer.TYPE, Integer.TYPE, Integer.TYPE);
     private static final Method GUI_RELEASE = find(GuiScreen.class,
@@ -18,6 +20,10 @@ final class MinecraftActions {
             new String[] {"keyTyped", "func_580_a", "a"}, Character.TYPE, Integer.TYPE);
 
     private MinecraftActions() {
+    }
+
+    static void click(Minecraft minecraft, int button) {
+        invoke(CLICK_MOUSE, minecraft, Integer.valueOf(button));
     }
 
     static void mine(Minecraft minecraft, boolean held) {
@@ -85,6 +91,10 @@ final class MinecraftActions {
 
     static boolean guiBridgeAvailable() {
         return GUI_CLICK != null && GUI_RELEASE != null && GUI_KEY != null;
+    }
+
+    static boolean gameplayBridgeAvailable() {
+        return CLICK_MOUSE != null;
     }
 
     private static Method find(Class<?> owner, String[] names, Class<?>... parameters) {

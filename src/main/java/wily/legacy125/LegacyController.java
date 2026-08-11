@@ -19,7 +19,6 @@ import wily.legacy125.client.screen.SlotNavigator;
 import wily.legacy125.input.ControllerFrame;
 import wily.legacy125.input.ControllerInput;
 import wily.legacy125.input.ControllerDebugLog125;
-import wily.legacy125.input.ControllerKeyBindingState125;
 import wily.legacy125.input.LwjglControllerInput;
 import wily.legacy125.input.LegacyCameraTurn125;
 import wily.legacy125.input.LegacyGameplayBindings125;
@@ -28,6 +27,7 @@ import wily.legacy125.input.MenuButtonLatch125;
 import wily.legacy125.input.MenuOpeningGate125;
 import wily.legacy125.input.MiningCadence125;
 import wily.legacy125.input.PadButton;
+import wily.legacy125.input.RepeatCooldown125;
 
 import java.util.EnumSet;
 
@@ -39,7 +39,8 @@ public final class LegacyController {
     private GuiScreen cursorScreen;
     private float cursorX;
     private float cursorY;
-    private final ControllerKeyBindingState125 useBinding = new ControllerKeyBindingState125();
+    private final RepeatCooldown125 useCooldown = new RepeatCooldown125(200L);
+    private boolean controllerUsing;
     private PadButton navigationDirection;
     private int navigationRepeat;
     private int lastHotbarSlot = -1;
@@ -135,7 +136,11 @@ public final class LegacyController {
         }
         if (current.released(PadButton.RIGHT_TRIGGER, previous)) MinecraftActions.mine(minecraft, false);
         boolean using = LegacyGameplayBindings125.using(current);
-        if (useBinding.update(settings.keyBindUseItem, using)) MinecraftActions.stopUsingItem(minecraft);
+        controllerUsing = using;
+        if (useCooldown.shouldFire(using, System.currentTimeMillis())) {
+            MinecraftActions.click(minecraft, 1);
+        }
+        if (current.released(PadButton.LEFT_TRIGGER, previous)) MinecraftActions.stopUsingItem(minecraft);
 
         int selectedSlot = minecraft.thePlayer.inventory.currentItem;
         if (selectedSlot != lastHotbarSlot) {
@@ -370,10 +375,9 @@ public final class LegacyController {
 
     private void releaseGameplay(Minecraft minecraft) {
         lastCameraUpdateMillis = 0L;
-        if (minecraft.gameSettings != null) {
-            if (useBinding.release(minecraft.gameSettings.keyBindUseItem)) {
-                MinecraftActions.stopUsingItem(minecraft);
-            }
+        if (controllerUsing) {
+            controllerUsing = false;
+            MinecraftActions.stopUsingItem(minecraft);
         }
         if (movementInput != null) movementInput.updateController(ControllerFrame.DISCONNECTED, false);
         MinecraftActions.mine(minecraft, false);
