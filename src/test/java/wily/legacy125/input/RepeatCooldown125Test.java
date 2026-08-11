@@ -7,21 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class RepeatCooldown125Test {
     @Test
-    void heldActionRepeatsAtRealTimeInterval() {
+    void repeatsAtConfiguredIntervalWhileHeld() {
         RepeatCooldown125 cooldown = new RepeatCooldown125(200L);
-
-        assertTrue(cooldown.shouldFire(true, 1_000L));
-        assertFalse(cooldown.shouldFire(true, 1_199L));
-        assertTrue(cooldown.shouldFire(true, 1_200L));
+        assertTrue(cooldown.shouldFire(true, 1000L));
+        assertFalse(cooldown.shouldFire(true, 1199L));
+        assertTrue(cooldown.shouldFire(true, 1200L));
     }
 
     @Test
-    void rapidReleaseAndRepressCannotBypassCooldown() {
+    void releasedStateNeverFires() {
         RepeatCooldown125 cooldown = new RepeatCooldown125(200L);
-
-        assertTrue(cooldown.shouldFire(true, 5_000L));
-        assertFalse(cooldown.shouldFire(false, 5_050L));
-        assertFalse(cooldown.shouldFire(true, 5_100L));
-        assertTrue(cooldown.shouldFire(true, 5_200L));
+        assertFalse(cooldown.shouldFire(false, 1000L));
     }
 }

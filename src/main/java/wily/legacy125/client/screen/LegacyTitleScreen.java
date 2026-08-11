@@ -3,10 +3,11 @@ package wily.legacy125.client.screen;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
+import wily.legacy125.input.ControllerDebugLog125;
 import java.lang.reflect.Method;
 
 public final class LegacyTitleScreen extends LegacyRenderableVListScreen {
-    private static final long EXIT_GRACE_MILLIS = 3000L;
+    private static final long EXIT_GRACE_MILLIS = 250L;
     private static final Method RENDER_SKYBOX = findSkybox();
     private GuiMainMenu panorama;
     public LegacyTitleScreen() {
@@ -69,6 +70,7 @@ public final class LegacyTitleScreen extends LegacyRenderableVListScreen {
     }
 
     private void exitGame() {
+        ControllerDebugLog125.log("Exit Game selected; beginning normal shutdown with watchdog fallback");
         Thread watchdog = new Thread("Legacy4J exit watchdog") {
             @Override
             public void run() {

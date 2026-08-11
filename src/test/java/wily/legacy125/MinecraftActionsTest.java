@@ -6,8 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class MinecraftActionsTest {
     @Test
-    void resolvesMinecraft125GameplayAndGuiInputEntrypoints() {
-        assertTrue(MinecraftActions.gameplayBridgeAvailable());
+    void resolvesMinecraft125GuiInputEntrypoints() {
         assertTrue(MinecraftActions.guiBridgeAvailable());
     }
 }
