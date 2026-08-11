@@ -6,6 +6,7 @@ import net.minecraft.src.GuiScreen;
 import java.lang.reflect.Method;
 
 public final class LegacyTitleScreen extends LegacyRenderableVListScreen {
+    private static final long EXIT_GRACE_MILLIS = 3000L;
     private static final Method RENDER_SKYBOX = findSkybox();
     private GuiMainMenu panorama;
     public LegacyTitleScreen() {
@@ -31,7 +32,7 @@ public final class LegacyTitleScreen extends LegacyRenderableVListScreen {
         if (button.id == 7) mc.displayGuiScreen(new net.minecraft.src.GuiLanguage(this, mc.gameSettings));
         if (button.id == 3) mc.displayGuiScreen(new LegacyOptionsScreen(this, mc.gameSettings));
         if (button.id == 8) mc.displayGuiScreen(LegacyTextScreen.storeUnavailable(this));
-        if (button.id == 5) mc.shutdown();
+        if (button.id == 5) exitGame();
     }
 
     @Override
@@ -65,6 +66,27 @@ public final class LegacyTitleScreen extends LegacyRenderableVListScreen {
     @Override
     public boolean doesGuiPauseGame() {
         return false;
+    }
+
+    private void exitGame() {
+        Thread watchdog = new Thread("Legacy4J exit watchdog") {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(EXIT_GRACE_MILLIS);
+                } catch (InterruptedException ignored) {
+                    return;
+                }
+                // Several 1.2.5-era mods leave shutdown cleanup blocked after
+                // the display has already been destroyed. At the title screen
+                // no world is loaded, so force the process down after normal
+                // Minecraft cleanup has had a reasonable chance to finish.
+                Runtime.getRuntime().halt(0);
+            }
+        };
+        watchdog.setDaemon(true);
+        watchdog.start();
+        mc.shutdown();
     }
 
     private static Method findSkybox() {

@@ -13,8 +13,6 @@ public final class mod_Legacy4J extends BaseMod {
 
     @Override
     public void load() {
-        Minecraft minecraft = ModLoader.getMinecraftInstance();
-        LegacyGuiIngame125.install(minecraft);
         visualScenarios = LegacyVisualScenarioRunner.fromSystemProperties();
         if (visualScenarios.enabled()) {
             // Display.update() polls every initialized LWJGL controller. Some

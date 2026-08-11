@@ -12,7 +12,7 @@ final class LegacyHud {
     private LegacyHud() {
     }
 
-    static void renderGameplay(Minecraft minecraft, String selectedItem, boolean flying, boolean autosaving) {
+    static void renderGameplay(Minecraft minecraft, String selectedItem, boolean flying) {
         if (minecraft.gameSettings.hideGUI) return;
         LegacyConfig config = LegacyConfig.get();
         ScaledResolution scaled = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth,
@@ -42,14 +42,6 @@ final class LegacyHud {
             int flyingX = (scaled.getScaledWidth() - minecraft.fontRenderer.getStringWidth(flyingLabel)) / 2;
             minecraft.fontRenderer.drawStringWithShadow(flyingLabel, flyingX,
                     scaled.getScaledHeight() - 54 - config.hudMargin, 0xFF80D8FF);
-        }
-
-
-        if (autosaving) {
-            String savingLabel = "Autosaved";
-            int savingX = scaled.getScaledWidth() - minecraft.fontRenderer.getStringWidth(savingLabel)
-                    - config.hudMargin;
-            minecraft.fontRenderer.drawStringWithShadow(savingLabel, savingX, config.hudMargin, 0xFFFFFFFF);
         }
 
     }

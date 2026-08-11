@@ -28,7 +28,6 @@ import wily.legacy125.input.MiningCadence125;
 import wily.legacy125.input.PadButton;
 import wily.legacy125.input.RepeatCooldown125;
 
-import java.io.File;
 import java.util.EnumSet;
 
 public final class LegacyController {
@@ -44,9 +43,6 @@ public final class LegacyController {
     private int navigationRepeat;
     private int lastHotbarSlot = -1;
     private int hotbarNameTicks;
-    private long lastSaveModified = -1L;
-    private int saveCheckTicks;
-    private int autosaveNoticeTicks;
     private GuiContainer slotScreen;
     private int focusedSlot = -1;
     private LegacyMovementInput125 movementInput;
@@ -135,10 +131,9 @@ public final class LegacyController {
         }
         ItemStack selected = minecraft.thePlayer.inventory.getCurrentItem();
         String selectedName = selected == null ? "" : selected.getItem().getItemDisplayName(selected);
-        updateAutosave(minecraft);
         LegacyHud.renderGameplay(minecraft,
                 config.showTooltips && hotbarNameTicks > 0 ? selectedName : "",
-                minecraft.thePlayer.capabilities.isFlying, autosaveNoticeTicks > 0);
+                minecraft.thePlayer.capabilities.isFlying);
     }
 
     public void tickGui(Minecraft minecraft, GuiScreen screen) {
@@ -347,22 +342,6 @@ public final class LegacyController {
         if (slot < 0) slot = 8;
         if (slot > 8) slot = 0;
         minecraft.thePlayer.inventory.currentItem = slot;
-    }
-
-    private void updateAutosave(Minecraft minecraft) {
-        if (autosaveNoticeTicks > 0) autosaveNoticeTicks--;
-        if (++saveCheckTicks < 20) return;
-        saveCheckTicks = 0;
-        try {
-            String directory = minecraft.theWorld.getSaveHandler().getSaveDirectoryName();
-            if (directory == null || directory.length() == 0) return;
-            File level = new File(new File(new File(minecraft.mcDataDir, "saves"), directory), "level.dat");
-            long modified = level.lastModified();
-            if (lastSaveModified > 0L && modified > lastSaveModified) autosaveNoticeTicks = 50;
-            if (modified > 0L) lastSaveModified = modified;
-        } catch (RuntimeException ignored) {
-            // Remote worlds and alternate save handlers do not necessarily expose a local level.dat.
-        }
     }
 
     private void moveSystemCursor(Minecraft minecraft, ScaledResolution scaled) {
