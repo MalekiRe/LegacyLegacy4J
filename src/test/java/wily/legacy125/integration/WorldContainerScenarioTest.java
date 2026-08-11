@@ -16,10 +16,13 @@ import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import wily.legacy125.client.LegacyGuiIngame125;
+import wily.legacy125.client.screen.LegacyCraftingScreen;
 
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -115,6 +118,18 @@ final class WorldContainerScenarioTest {
         assertNotNull(player.inventory.getItemStack());
         assertEquals(Item.stick.shiftedIndex, player.inventory.getItemStack().itemID);
         assertEquals(4, player.inventory.getItemStack().stackSize);
+    }
+
+    @Test
+    void suppressesGameplayHudForPlayerCraftingButNotCraftingTables() {
+        World world = newWorld("crafting-hud-scope");
+        ScenarioPlayer player = playerAt(world, 0.5D, 65.0D, 0.5D);
+        LegacyCraftingScreen playerCrafting = new LegacyCraftingScreen(player.inventorySlots);
+        LegacyCraftingScreen tableCrafting = new LegacyCraftingScreen(
+                new ContainerWorkbench(player.inventory, world, 0, 64, 0));
+
+        assertTrue(LegacyGuiIngame125.suppressesGameplayHud(playerCrafting));
+        assertFalse(LegacyGuiIngame125.suppressesGameplayHud(tableCrafting));
     }
 
     private World newWorld(String name) {

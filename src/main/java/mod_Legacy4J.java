@@ -3,6 +3,7 @@ import net.minecraft.src.GuiScreen;
 import org.lwjgl.input.Controllers;
 import wily.legacy125.LegacyConfig;
 import wily.legacy125.LegacyController;
+import wily.legacy125.client.LegacyGuiIngame125;
 import wily.legacy125.visual.LegacyVisualScenarioRunner;
 
 /** Risugami ModLoader entry point for Minecraft 1.2.5. */
@@ -12,6 +13,8 @@ public final class mod_Legacy4J extends BaseMod {
 
     @Override
     public void load() {
+        Minecraft minecraft = ModLoader.getMinecraftInstance();
+        LegacyGuiIngame125.install(minecraft);
         visualScenarios = LegacyVisualScenarioRunner.fromSystemProperties();
         if (visualScenarios.enabled()) {
             // Display.update() polls every initialized LWJGL controller. Some
@@ -30,6 +33,7 @@ public final class mod_Legacy4J extends BaseMod {
 
     @Override
     public boolean onTickInGame(float partialTick, Minecraft minecraft) {
+        LegacyGuiIngame125.install(minecraft);
         // ModLoader also invokes the GUI hook for an in-world screen. Count a
         // visual settle tick only once so captures are deterministic.
         if (visualScenarios.enabled()) {
@@ -42,6 +46,7 @@ public final class mod_Legacy4J extends BaseMod {
 
     @Override
     public boolean onTickInGUI(float partialTick, Minecraft minecraft, GuiScreen screen) {
+        LegacyGuiIngame125.install(minecraft);
         if (visualScenarios.enabled()) {
             visualScenarios.tick(minecraft);
             return true;

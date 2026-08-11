@@ -73,6 +73,11 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
         loadRecipes();
     }
 
+    /** True only for the crafting view opened directly from the player's inventory. */
+    public boolean isPlayerCrafting() {
+        return gridWidth == 2 && gridHeight == 2;
+    }
+
     @Override
     public void initGui() {
         super.initGui();
