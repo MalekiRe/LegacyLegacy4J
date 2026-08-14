@@ -250,7 +250,9 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
         String name = recipeName(recipe);
         LegacyTheme.drawCenteredString(mc, trim(name, 27), 65, 51,
                 LegacyTheme.TEXT, false);
-        ItemStack[] layout = recipe.displayLayout(gridWidth, gridHeight);
+        int ingredientVariant = (int) ((System.currentTimeMillis() / 1000L)
+                % recipe.ingredientVariantCount());
+        ItemStack[] layout = recipe.displayLayout(gridWidth, gridHeight, ingredientVariant);
         boolean available = recipe.hasIngredients(playerInventory());
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -387,7 +389,7 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
             message("Missing ingredients");
             return;
         }
-        ItemStack[] layout = selected.layout(gridWidth, gridHeight);
+        ItemStack[] layout = selected.layoutForInventory(playerInventory(), gridWidth, gridHeight);
         List<Slot> matrixSlots = matrixSlots();
         for (int i = 0; i < layout.length; i++) {
             ItemStack ingredient = layout[i];

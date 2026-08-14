@@ -88,6 +88,10 @@ public final class LegacyCraftingGroups {
         int jacket = name.indexOf(" jacketed ");
         if (jacket > 0) return "redpower:jacketed";
 
+        if (oneOf(name, "treetap", "tree tap", "electric treetap", "electric tree tap")) {
+            return "ic2:treetap";
+        }
+
         if (name.equals("energy collector") || name.startsWith("collector mk")) {
             return "ee2:energy-collector";
         }
@@ -221,7 +225,30 @@ public final class LegacyCraftingGroups {
     }
 
     public static boolean isToolLike(ItemStack output) {
-        return toolFamily(output) != null;
+        return toolFamily(output) != null
+                || output != null && output.getItem() != null && isNamedUtilityTool(normalizedName(output));
+    }
+
+    /** Handheld utility items whose old mods extend Item directly instead of a vanilla tool base class. */
+    private static boolean isNamedUtilityTool(String name) {
+        if (oneOf(name, "eu reader", "insulation cutter", "cf sprayer", "tool box",
+                "od scanner", "ov scanner", "paint brush", "paint can", "voltmeter",
+                "wool card", "diamond drawplate", "arcane tinkering tool", "crystal ball",
+                "crystalline bell", "portable hole", "vis detector", "taint detector",
+                "void compass", "wireless remote", "remote", "wireless map", "wireless tracker",
+                "wireless sniffer", "private sniffer", "triangulator", "wireless triangulator",
+                "philosopher's stone", "watch of flowing time", "gem of eternal density",
+                "talisman of repair", "dark matter hammer", "red matter hammer",
+                "dark matter shears", "red matter shears", "red katar", "red morning star",
+                "divining rod", "destruction catalyst", "hyperkinetic lens", "catalytic lens",
+                "mercurial eye", "iron band", "black hole band", "ring of ignition", "zero ring",
+                "ring of arcana", "void ring", "swiftwolf's rending gale",
+                "harvest goddess band", "archangel's smite", "evertide amulet",
+                "volcanite amulet", "soul stone", "body stone", "life stone", "mind stone",
+                "alchemy bag", "transmutation tablet", "alchemical tome")) return true;
+        return name.equals("painter") || name.endsWith(" painter") || name.endsWith(" paint")
+                || name.startsWith("wand of ") || name.startsWith("arcane focus")
+                || name.startsWith("charm of ");
     }
 
     public static boolean isArmorLike(ItemStack output) {
@@ -255,6 +282,7 @@ public final class LegacyCraftingGroups {
     }
 
     private static String toolFamilyFromText(String value) {
+        if (containsWord(value, "treetap") || containsWord(value, "tree tap")) return "treetap";
         if (containsWord(value, "pickaxe")) return "pickaxe";
         if (containsWord(value, "shovel") || containsWord(value, "spade")) return "shovel";
         if (containsWord(value, "chainsaw")) return "chainsaw";

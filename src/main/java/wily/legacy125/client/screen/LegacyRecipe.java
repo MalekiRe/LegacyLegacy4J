@@ -19,6 +19,7 @@ final class LegacyRecipe {
     final int width;
     final int height;
     final boolean shapeless;
+    final List<ItemStack[]> ingredientVariants = new ArrayList<ItemStack[]>();
 
     private LegacyRecipe(IRecipe recipe, ItemStack output, ItemStack[] cells, int width, int height,
                          boolean shapeless) {
@@ -28,6 +29,7 @@ final class LegacyRecipe {
         this.width = width;
         this.height = height;
         this.shapeless = shapeless;
+        ingredientVariants.add(copy(cells));
     }
 
     static LegacyRecipe read(IRecipe recipe) {
@@ -162,10 +164,15 @@ final class LegacyRecipe {
     }
 
     ItemStack[] displayLayout(int gridWidth, int gridHeight) {
-        if (fits(gridWidth, gridHeight)) return layout(gridWidth, gridHeight);
+        return displayLayout(gridWidth, gridHeight, 0);
+    }
+
+    ItemStack[] displayLayout(int gridWidth, int gridHeight, int ingredientVariant) {
+        ItemStack[] variant = ingredientVariant(ingredientVariant);
+        if (fits(gridWidth, gridHeight)) return layout(variant, gridWidth, gridHeight);
         ItemStack[] result = new ItemStack[gridWidth * gridHeight];
         int used = 0;
-        for (ItemStack cell : cells) {
+        for (ItemStack cell : variant) {
             if (cell == null) continue;
             int found = -1;
             for (int i = 0; i < used; i++) if (matches(result[i], cell)) {
@@ -183,13 +190,24 @@ final class LegacyRecipe {
     }
 
     ItemStack[] layout(int gridWidth, int gridHeight) {
+        return layout(cells, gridWidth, gridHeight);
+    }
+
+    ItemStack[] layoutForInventory(ItemStack[] inventory, int gridWidth, int gridHeight) {
+        for (ItemStack[] variant : ingredientVariants) {
+            if (hasIngredients(variant, inventory)) return layout(variant, gridWidth, gridHeight);
+        }
+        return layout(gridWidth, gridHeight);
+    }
+
+    private ItemStack[] layout(ItemStack[] variant, int gridWidth, int gridHeight) {
         ItemStack[] result = new ItemStack[gridWidth * gridHeight];
         if (shapeless) {
-            for (int i = 0; i < cells.length && i < result.length; i++) result[i] = copy(cells[i]);
+            for (int i = 0; i < variant.length && i < result.length; i++) result[i] = copy(variant[i]);
         } else {
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                    result[x + y * gridWidth] = copy(cells[x + y * width]);
+                    result[x + y * gridWidth] = copy(variant[x + y * width]);
                 }
             }
         }
@@ -197,8 +215,42 @@ final class LegacyRecipe {
     }
 
     boolean hasIngredients(ItemStack[] inventory) {
+        for (ItemStack[] variant : ingredientVariants) {
+            if (hasIngredients(variant, inventory)) return true;
+        }
+        return false;
+    }
+
+    int ingredientVariantCount() {
+        return ingredientVariants.size();
+    }
+
+    boolean mergeIngredientVariant(LegacyRecipe other) {
+        if (other == null || shapeless != other.shapeless || width != other.width || height != other.height
+                || cells.length != other.cells.length) return false;
+        for (int i = 0; i < cells.length; i++) {
+            if ((cells[i] == null) != (other.cells[i] == null)) return false;
+        }
+        for (ItemStack[] candidate : other.ingredientVariants) {
+            boolean known = false;
+            for (ItemStack[] existing : ingredientVariants) {
+                if (sameIngredients(existing, candidate)) {
+                    known = true;
+                    break;
+                }
+            }
+            if (!known) ingredientVariants.add(copy(candidate));
+        }
+        return true;
+    }
+
+    private ItemStack[] ingredientVariant(int index) {
+        return ingredientVariants.get(Math.max(0, Math.min(ingredientVariants.size() - 1, index)));
+    }
+
+    private static boolean hasIngredients(ItemStack[] ingredients, ItemStack[] inventory) {
         List<ItemStack> needed = new ArrayList<ItemStack>();
-        for (ItemStack cell : cells) if (cell != null) needed.add(cell);
+        for (ItemStack cell : ingredients) if (cell != null) needed.add(cell);
         int[] remaining = new int[inventory.length];
         for (int i = 0; i < inventory.length; i++) {
             remaining[i] = inventory[i] == null ? 0 : inventory[i].stackSize;
@@ -213,6 +265,17 @@ final class LegacyRecipe {
                 }
             }
             if (!found) return false;
+        }
+        return true;
+    }
+
+    private static boolean sameIngredients(ItemStack[] left, ItemStack[] right) {
+        if (left.length != right.length) return false;
+        for (int i = 0; i < left.length; i++) {
+            if (left[i] == null || right[i] == null) {
+                if (left[i] != right[i]) return false;
+            } else if (!matches(left[i], right[i]) || !matches(right[i], left[i])
+                    || left[i].stackSize != right[i].stackSize) return false;
         }
         return true;
     }

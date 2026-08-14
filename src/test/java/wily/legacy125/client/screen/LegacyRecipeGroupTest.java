@@ -248,6 +248,69 @@ final class LegacyRecipeGroupTest {
     }
 
     @Test
+    void mergesRegisteredMetalAlternativesAndChoosesAnOwnedLayout() {
+        ItemStack copperA = named(31100, "Copper Ingot");
+        ItemStack copperB = named(31101, "Copper Ingot");
+        ItemStack tinA = named(31102, "Tin Ingot");
+        ItemStack tinB = named(31103, "Tin Ingot");
+        ItemStack output = named(31104, "Mixed Metal Component");
+        LegacyRecipe first = LegacyRecipe.read(new ForeignRecipe(output,
+                new ItemStack[]{copperA, tinA}, 2, false));
+        LegacyRecipe second = LegacyRecipe.read(new ForeignRecipe(output,
+                new ItemStack[]{copperB, tinB}, 2, false));
+
+        LegacyRecipeGroup group = new LegacyRecipeGroup("test:copper-component");
+        group.add(first);
+        group.add(second);
+
+        assertEquals(1, group.recipes.size());
+        LegacyRecipe merged = group.recipes.get(0);
+        assertEquals(2, merged.ingredientVariantCount());
+        assertTrue(merged.hasIngredients(new ItemStack[]{copperB, tinB}));
+        assertFalse(merged.hasIngredients(new ItemStack[]{copperA, tinB}));
+        ItemStack[] chosen = merged.layoutForInventory(
+                new ItemStack[]{copperB, tinB}, 2, 2);
+        assertEquals(copperB.itemID, chosen[0].itemID);
+        assertEquals(tinB.itemID, chosen[1].itemID);
+        assertEquals(copperA.itemID, merged.displayLayout(2, 2, 0)[0].itemID);
+        assertEquals(copperB.itemID, merged.displayLayout(2, 2, 1)[0].itemID);
+    }
+
+    @Test
+    void groupsManualAndElectricTreeTapsInTools() {
+        ItemStack manual = named(31105, "Treetap");
+        ItemStack electric = named(31106, "Electric Treetap");
+        assertSameGroup(manual, electric);
+        assertEquals("tools", LegacyCraftingTabs.categoryFor(manual).id);
+        assertEquals("tools", LegacyCraftingTabs.categoryFor(electric).id);
+    }
+
+    @Test
+    void classifiesApprovedModdedUtilityItemsAsTools() {
+        String[] names = {
+                "EU-Reader", "Insulation Cutter", "CF Sprayer", "Tool Box", "OD Scanner",
+                "OV Scanner", "Painter", "Red Painter", "Paint Brush", "Paint Can", "Blue Paint",
+                "Voltmeter", "Wool Card", "Diamond Drawplate", "Arcane Tinkering Tool",
+                "Wand of Fire", "Crystal Ball", "Crystalline Bell", "Portable Hole", "Vis Detector",
+                "Taint Detector", "Void Compass", "Arcane Focus: Fire", "Charm of Life",
+                "Wireless Remote", "Wireless Map", "Wireless Tracker", "Triangulator",
+                "Wireless Sniffer", "Private Sniffer", "Philosopher's Stone", "Watch of Flowing Time",
+                "Gem of Eternal Density", "Talisman of Repair", "Dark Matter Hammer",
+                "Red Matter Hammer", "Dark Matter Shears", "Red Matter Shears", "Red Katar",
+                "Red Morning Star", "Divining Rod", "Destruction Catalyst", "Hyperkinetic Lens",
+                "Catalytic Lens", "Mercurial Eye", "Iron Band", "Black Hole Band",
+                "Ring of Ignition", "Zero Ring", "Ring of Arcana", "Void Ring",
+                "Swiftwolf's Rending Gale", "Harvest Goddess Band", "Archangel's Smite",
+                "Evertide Amulet", "Volcanite Amulet", "Soul Stone", "Body Stone", "Life Stone",
+                "Mind Stone", "Alchemy Bag", "Transmutation Tablet", "Alchemical Tome"
+        };
+        for (int i = 0; i < names.length; i++) {
+            assertEquals("tools", LegacyCraftingTabs.categoryFor(named(31200 + i, names[i])).id,
+                    names[i]);
+        }
+    }
+
+    @Test
     void everyReadableVanillaRecipeHasATabAndStableGroupKey() {
         int readable = 0;
         Set<String> categories = new HashSet<String>();

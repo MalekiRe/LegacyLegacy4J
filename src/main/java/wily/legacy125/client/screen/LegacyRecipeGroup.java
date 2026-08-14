@@ -21,7 +21,10 @@ final class LegacyRecipeGroup {
 
     void add(LegacyRecipe recipe) {
         for (LegacyRecipe existing : recipes) {
-            if (sameVariant(existing.output, recipe.output)) return;
+            if (sameVariant(existing.output, recipe.output)) {
+                existing.mergeIngredientVariant(recipe);
+                return;
+            }
         }
         recipes.add(recipe);
     }
