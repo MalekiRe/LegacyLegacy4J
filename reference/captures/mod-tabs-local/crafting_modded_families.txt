@@ -1,0 +1,381 @@
+structures	00_planks	Oak Planks | Spruce Planks | Birch Planks | Jungle Planks | Jungle Planks
+structures	01_stick	Stick | Stick
+structures	02_snow	Snow
+structures	03_sandstone	Sandstone | Sandstone | Sandstone
+structures	04_utility	Crafting Table
+structures	05_chest	Chest
+structures	06_trapdoor	Trapdoor
+structures	50_bars	Iron Bars
+structures	50_block	Lapis Lazuli Block
+structures	50_block of diamond	Block of Diamond
+structures	50_block of gold	Block of Gold
+structures	50_block of iron	Block of Iron
+structures	50_brick stairs	Brick Stairs | Stone Brick Stairs
+structures	50_bricks	Bricks
+structures	50_bricks slab	Bricks Slab | Stone Bricks Slab
+structures	50_clay	Clay
+structures	50_enchantment table	Enchantment Table
+structures	50_fence	Fence
+structures	50_fence gate	Fence Gate
+structures	50_furnace	Furnace
+structures	50_glowstone	Glowstone
+structures	50_grass block	Grass Block
+structures	50_ice	Ice
+structures	50_ladder	Ladder
+structures	50_melon	Melon
+structures	50_nether brick fence	Nether Brick Fence
+structures	50_nether brick stairs	Nether Brick Stairs
+structures	50_obsidian	Obsidian
+structures	50_slab	Cobblestone Slab | Stone Slab | Sandstone Slab | Wooden Slab
+structures	50_stairs	Wooden Stairs | Stone Stairs
+tools	tool:pickaxe	Wooden Pickaxe | Stone Pickaxe | Iron Pickaxe | Diamond Pickaxe | Golden Pickaxe
+tools	bow	Bow
+tools	fishing rod	Fishing Rod
+tools	tool:axe	Wooden Axe | Stone Axe | Iron Axe | Diamond Axe | Golden Axe
+tools	tool:hoe	Wooden Hoe | Stone Hoe | Iron Hoe | Diamond Hoe | Golden Hoe
+tools	shears	Shears
+tools	flint and steel	Flint and Steel
+tools	tool:shovel	Wooden Shovel | Stone Shovel | Iron Shovel | Diamond Shovel | Golden Shovel
+tools	tool:sword	Wooden Sword | Stone Sword | Iron Sword | Diamond Sword | Golden Sword
+food	cake	Cake
+food	apple	Golden Apple
+food	cookie	Cookie
+food	bread	Bread
+food	melon seeds	Melon Seeds
+food	pumpkin seeds	Pumpkin Seeds
+food	sugar	Sugar
+food	mushroom stew	Mushroom Stew
+armour	armor:1	Leather Tunic | Chain Chestplate | Iron Chestplate | Diamond Chestplate | Golden Chestplate
+armour	armor:2	Leather Pants | Chain Leggings | Iron Leggings | Diamond Leggings | Golden Leggings
+armour	armor:0	Leather Cap | Chain Helmet | Iron Helmet | Diamond Helmet | Golden Helmet
+armour	armor:3	Leather Boots | Chain Boots | Iron Boots | Diamond Boots | Golden Boots
+mechanisms	redstone lamp	Redstone Lamp
+mechanisms	note block	Note Block
+mechanisms	tnt	TNT
+mechanisms	dispenser	Dispenser
+mechanisms	piston	Piston
+mechanisms	redstone repeater	Redstone Repeater
+mechanisms	lever	Lever
+mechanisms	redstone torch	Redstone Torch
+mechanisms	button	Button
+mechanisms	pressure plate	Pressure Plate | Pressure Plate
+mechanisms	sticky piston	Sticky Piston
+transport	rail	Rail
+transport	powered rail	Powered Rail
+transport	detector rail	Detector Rail
+transport	clock	Clock
+transport	compass	Compass
+transport	minecart	Minecart
+transport	boat	Boat
+transport	minecart with chest	Minecart with Chest
+transport	minecart with furnace	Minecart with Furnace
+decoration	ingot	Gold Ingot | Gold Ingot | Iron Ingot | Gold Ingot | Iron Ingot | Iron Ingot | Iron Ingot
+decoration	jukebox	Jukebox
+decoration	bookshelf	Bookshelf
+decoration	sign	Sign
+decoration	cauldron	Cauldron
+decoration	painting	Painting
+decoration	map	Map
+decoration	glass pane	Glass Pane
+decoration	door	Wooden Door | Iron Door
+decoration	bowl	Bowl | Stone Bowl
+decoration	glass bottle	Glass Bottle
+decoration	brewing stand	Brewing Stand
+decoration	bucket	Bucket
+decoration	bed	Bed
+decoration	wool	Wool | Black Wool | Red Wool | Green Wool | Brown Wool | Blue Wool | Purple Wool | Cyan Wool | Light Gray Wool | Gray Wool | Pink Wool | Lime Wool | Yellow Wool | Light Blue Wool | Magenta Wool | Orange Wool
+decoration	arrow	Arrow
+decoration	paper	Paper
+decoration	book	Book
+decoration	torch	Torch
+decoration	jack 'o' lantern	Jack 'o' Lantern
+decoration	diamond	Diamond | Diamond | Diamond
+decoration	lapis lazuli	Lapis Lazuli
+decoration	nugget	Gold Nugget
+decoration	dye	Magenta Dye | Light Gray Dye | Magenta Dye | Pink Dye | Orange Dye | Lime Dye | Gray Dye | Light Gray Dye | Light Blue Dye | Cyan Dye | Purple Dye | Magenta Dye
+decoration	fermented spider eye	Fermented Spider Eye
+decoration	fire charge	Fire Charge
+decoration	glistering melon	Glistering Melon
+decoration	magma cream	Magma Cream
+decoration	eye of ender	Eye of Ender
+decoration	blaze powder	Blaze Powder | Blaze Powder
+decoration	dandelion yellow	Dandelion Yellow
+decoration	rose red	Rose Red
+decoration	bone meal	Bone Meal
+decoration	coal	Coal | Coal
+decoration	charcoal	Charcoal
+decoration	water bucket	Water Bucket
+decoration	lava bucket	Lava Bucket
+decoration	stick	Obsidian Stick
+decoration	wireless-redstone:transceiver	Wireless Transceiver | Blaze Transceiver
+decoration	rether pearl	REther Pearl
+decoration	wireless-redstone:receiver-dish	Receiver Dish | Blaze Receiver Dish
+decoration	string	String
+mod:ic2:equipment	ic2:treetap	Treetap | Electric Treetap
+mod:ic2:equipment	painter	Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter | Painter
+mod:ic2:equipment	cf sprayer	CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer | CF Sprayer
+mod:ic2:equipment	tool:drill	Diamond Drill | Mining Drill
+mod:ic2:equipment	ic2:scanner	OD Scanner | OV Scanner
+mod:ic2:equipment	tool:wrench	Electric Wrench | Wrench
+mod:ic2:equipment	eu reader	EU-Reader
+mod:ic2:equipment	tool:mining laser	Mining Laser
+mod:ic2:equipment	nano saber	Nano Saber
+mod:ic2:equipment	armor:1	Composite Vest | NanoSuit Bodyarmor | QuantumSuit Bodyarmor | Lappack | BatPack | CF Backpack | Bronze Chestplate | Jetpack | Electric Jetpack
+mod:ic2:equipment	armor:0	NanoSuit Helmet | QuantumSuit Helmet | Solar Helmet | Bronze Helmet
+mod:ic2:equipment	armor:2	NanoSuit Leggings | QuantumSuit Leggings | Bronze Legs
+mod:ic2:equipment	armor:3	NanoSuit Boots | QuantumSuit Boots | Rubber Boots | Static Boots | Bronze Boots
+mod:ic2:equipment	tool:pickaxe	Bronze Pickaxe
+mod:ic2:equipment	tool:axe	Bronze Axe
+mod:ic2:equipment	tool:hoe	Bronze Hoe | Electric Hoe
+mod:ic2:equipment	tool:sword	Bronze Sword
+mod:ic2:equipment	tool:shovel	Bronze Shovel
+mod:ic2:equipment	insulation cutter	Insulation Cutter
+mod:ic2:equipment	tool:chainsaw	Chainsaw
+mod:ic2:equipment	tool box	Tool Box
+mod:ic2:components	dynamite o mote	Dynamite-O-Mote
+mod:ic2:components	ic2:cable-gold	Gold Cable | Insulated Gold Cable | Insulated Gold Cable | 2xIns. Gold Cable
+mod:ic2:components	ic2:cable-special	Glass Fibre Cable | EU-Detector Cable | EU-Splitter Cable | Glass Fibre Cable | Ultra-Low-Current Cable
+mod:ic2:components	single use battery	Single-Use Battery | Single-Use Battery
+mod:ic2:components	energy crystal	Energy Crystal
+mod:ic2:components	lapotron crystal	Lapotron Crystal
+mod:ic2:components	frequency transmitter	Frequency Transmitter
+mod:ic2:components	advanced circuit	Advanced Circuit
+mod:ic2:components	plantball	Plantball | Plantball
+mod:ic2:components	raw carbon fibre	Raw Carbon Fibre
+mod:ic2:components	iridium plate	Iridium Plate
+mod:ic2:components	coal ball	Coal Ball
+mod:ic2:components	coal chunk	Coal Chunk
+mod:ic2:components	hydrated coal dust	Hydrated Coal Dust | Hydrated Coal Dust
+mod:ic2:components	refined iron	Refined Iron | Refined Iron
+mod:ic2:components	copper	Copper
+mod:ic2:components	tin	Tin
+mod:ic2:components	bronze	Bronze
+mod:ic2:components	refined uranium	Refined Uranium
+mod:ic2:components	ic2:tfbp	TFBP - Empty | TFBP - Cultivation | TFBP - Desertification | TFBP - Irrigation | TFBP - Chilling | TFBP - Flatification | TFBP - Mushroom
+mod:ic2:components	ic2:upgrade	Overclocker Upgrade | Transformer Upgrade | Energy Storage Upgrade
+mod:ic2:components	reinforced door	Reinforced Door
+mod:ic2:components	scrap box	Scrap Box
+mod:ic2:components	dynamite	Dynamite
+mod:ic2:components	sticky dynamite	Sticky Dynamite
+mod:ic2:components	cropnalyzer	Cropnalyzer
+mod:ic2:components	fertilizer	Fertilizer
+mod:ic2:components	weed ex	Weed-EX
+mod:ic2:components	mug	Stone Mug
+mod:ic2:components	coffee powder	Coffee Powder
+mod:ic2:components	cold coffee	Cold Coffee
+mod:ic2:components	coffee	Coffee
+mod:ic2:components	empty booze barrel	Empty Booze Barrel
+mod:ic2:components	ic2:cable-copper	Copper Cable | Copper Cable | Uninsulated Copper Cable
+mod:ic2:components	ic2:cable-hv	Insulated HV Cable | 2xIns. HV Cable | 4xIns. HV Cable | HV Cable | Insulated HV Cable
+mod:ic2:components	ic2:cell	Water Cell | Lava Cell | H. Coal Cell | Bio Cell | Uranium Cell | Depleted Isotope Cell | Empty Cell | Near-depleted Uranium Cell
+mod:ic2:components	dust	Bronze Dust | Iron Dust
+mod:ic2:components	raw carbon mesh	Raw Carbon Mesh
+mod:ic2:components	re battery	RE-Battery
+mod:ic2:components	(empty) fuel can	(Empty) Fuel Can
+mod:ic2:components	can	Tin Can
+mod:ic2:components	integrated heat disperser	Integrated Heat Disperser
+mod:ic2:components	integrated reactor plating	Integrated Reactor Plating
+mod:ic2:components	electronic circuit	Electronic Circuit
+mod:ic2:components	industrial credit	Industrial Credit
+mod:ic2:components	mixed metal ingot	Mixed Metal Ingot
+mod:ic2:machines	furnace	Iron Furnace
+mod:ic2:machines	ic2:furnace	Electric Furnace | Induction Furnace
+mod:ic2:machines	ic2:processing-machine	Macerator | Extractor | Compressor | Canning Machine | Recycler
+mod:ic2:machines	miner	Miner
+mod:ic2:machines	pump	Pump
+mod:ic2:machines	magnetizer	Magnetizer
+mod:ic2:machines	electrolyzer	Electrolyzer
+mod:ic2:machines	ic2:machine-block	Advanced Machine Block | Machine Block
+mod:ic2:machines	personal safe	Personal Safe
+mod:ic2:machines	trade o mat	Trade-O-Mat
+mod:ic2:machines	mass fabricator	Mass Fabricator
+mod:ic2:machines	terraformer	Terraformer
+mod:ic2:machines	teleporter	Teleporter
+mod:ic2:machines	ic2:generator	Generator | Water Mill | Solar Panel | Wind Mill | Geothermal Generator
+mod:ic2:machines	reactor chamber	Reactor Chamber
+mod:ic2:machines	nuclear reactor	Nuclear Reactor
+mod:ic2:machines	ic2:energy-storage	BatBox | MFE | MFSU
+mod:ic2:machines	ic2:transformer	MV-Transformer | HV-Transformer | LV-Transformer
+mod:ic2:machines	reinforced stone	Reinforced Stone
+mod:ic2:machines	reinforced glass	Reinforced Glass
+mod:ic2:machines	industrial tnt	Industrial TNT
+mod:ic2:machines	rubber sheet	Rubber Sheet
+mod:ic2:machines	scaffold	Scaffold | Iron Scaffold
+mod:ic2:machines	crop	Crop
+mod:ic2:machines	crop matron	Crop-Matron
+mod:ic2:machines	construction foam	Construction Foam
+mod:ic2:machines	block	Tin Block | Copper Block | Bronze Block
+mod:ic2:machines	buildcraft:mining	Mining Pipe
+mod:ic2:machines	fence	Iron Fence
+mod:ic2:machines	tesla coil	Tesla Coil
+mod:ic2:machines	luminator	Luminator
+mod:ic2:machines	uranium block	Uranium Block
+mod:buildcraft:equipment	tool:wrench	Wrench
+mod:buildcraft:components	gear	Wooden Gear | Stone Gear | Iron Gear | Gold Gear | Diamond Gear
+mod:buildcraft:components	template	Template
+mod:buildcraft:components	blueprint	Blueprint
+mod:buildcraft:components	pipe waterproof	Pipe Waterproof
+mod:buildcraft:components	transport pipe	Wooden Transport Pipe | Cobblestone Transport Pipe | Stone Transport Pipe | Iron Transport Pipe | Golden Transport Pipe | Diamond Transport Pipe | Obsidian Transport Pipe
+mod:buildcraft:components	waterproof pipe	Wooden Waterproof Pipe | Cobblestone Waterproof Pipe | Stone Waterproof Pipe | Iron Waterproof Pipe | Golden Waterproof Pipe
+mod:buildcraft:components	conductive pipe	Wooden Conductive Pipe | Stone Conductive Pipe | Golden Conductive Pipe
+mod:buildcraft:components	structure pipe	Cobblestone Structure Pipe
+mod:buildcraft:components	stripes transport pipe	Stripes Transport Pipe
+mod:buildcraft:machines	machine:engine	Redstone Engine | Steam Engine | Combustion Engine
+mod:buildcraft:machines	buildcraft:marker	Land Mark | Path Mark
+mod:buildcraft:machines	buildcraft:construction	Filler | Builder | Architect Table | Blueprint Library
+mod:buildcraft:machines	buildcraft:mining	Mining Well | Quarry
+mod:buildcraft:machines	automatic crafting table	Automatic Crafting Table
+mod:buildcraft:machines	pump	Pump
+mod:buildcraft:machines	tank	Tank
+mod:buildcraft:machines	refinery	Refinery
+mod:buildcraft:machines	laser	Laser
+mod:buildcraft:machines	assembly table	Assembly Table
+mod:redpower:equipment	tool:handsaw	Iron Handsaw | Diamond Handsaw | Ruby Handsaw | Emerald Handsaw | Sapphire Handsaw
+mod:redpower:equipment	tool:wrench	Screwdriver | Sonic Screwdriver
+mod:redpower:equipment	drawplate	Diamond Drawplate
+mod:redpower:equipment	tool:pickaxe	Ruby Pickaxe | Emerald Pickaxe | Sapphire Pickaxe
+mod:redpower:equipment	tool:shovel	Ruby Shovel | Emerald Shovel | Sapphire Shovel
+mod:redpower:equipment	tool:axe	Ruby Axe | Emerald Axe | Sapphire Axe
+mod:redpower:equipment	tool:sword	Ruby Sword | Emerald Sword | Sapphire Sword | Athame
+mod:redpower:equipment	tool:hoe	Ruby Hoe | Emerald Hoe | Sapphire Hoe
+mod:redpower:equipment	tool:sickle	Wood Sickle | Stone Sickle | Iron Sickle | Diamond Sickle | Gold Sickle | Ruby Sickle | Emerald Sickle | Sapphire Sickle
+mod:redpower:equipment	wool card	Wool Card
+mod:redpower:equipment	paint brush	Paint Brush
+mod:redpower:equipment	paint can	Paint Can
+mod:redpower:equipment	paint	White Paint | Orange Paint | Magenta Paint | Light Blue Paint | Yellow Paint | Lime Paint | Pink Paint | Gray Paint | Light Gray Paint | Cyan Paint | Purple Paint | Blue Paint | Brown Paint | Green Paint | Red Paint | Black Paint
+mod:redpower:equipment	voltmeter	Voltmeter
+mod:redpower:components	lumar	White Lumar | Orange Lumar | Magenta Lumar | Light Blue Lumar | Yellow Lumar | Lime Lumar | Pink Lumar | Gray Lumar | Light Gray Lumar | Cyan Lumar | Purple Lumar | Blue Lumar | Brown Lumar | Green Lumar | Red Lumar | Black Lumar
+mod:redpower:components	nugget	Silver Nugget | Tin Nugget | Copper Nugget | Iron Nugget
+mod:redpower:components	fine copper wire	Fine Copper Wire
+mod:redpower:components	silicon wafer	Silicon Wafer
+mod:redpower:components	fine iron wire	Fine Iron Wire
+mod:redpower:components	ingot	Silver Ingot | Tin Ingot | Copper Ingot
+mod:redpower:components	wire	Stone Wire
+mod:redpower:components	anode	Stone Anode
+mod:redpower:components	cathode	Stone Cathode
+mod:redpower:components	pointer	Stone Pointer
+mod:redpower:components	redwire	Stone Redwire
+mod:redpower:components	plate assembly	Plate Assembly
+mod:redpower:components	silicon chip	Silicon Chip
+mod:redpower:components	tainted silicon chip	Tainted Silicon Chip
+mod:redpower:components	bundle	Stone Bundle
+mod:redpower:components	blank floppy	Blank Floppy
+mod:redpower:components	forth boot disk	FORTH Boot Disk
+mod:redpower:components	indigo dye	Indigo Dye
+mod:redpower:components	ruby	Ruby
+mod:redpower:components	emerald	Emerald
+mod:redpower:components	sapphire	Sapphire
+mod:redpower:components	paint brush	White Paint Brush | Orange Paint Brush | Magenta Paint Brush | Light Blue Paint Brush | Yellow Paint Brush | Lime Paint Brush | Pink Paint Brush | Gray Paint Brush | Light Gray Paint Brush | Cyan Paint Brush | Purple Paint Brush | Blue Paint Brush | Brown Paint Brush | Green Paint Brush | Red Paint Brush | Black Paint Brush
+mod:redpower:components	coil	Copper Coil
+mod:redpower:components	blulectric motor	Blulectric Motor
+mod:redpower:components	bt battery	BT Battery
+mod:redpower:machines	bricks	Stone Bricks | Stone Bricks
+mod:redpower:machines	alloy furnace	Alloy Furnace
+mod:redpower:machines	project table	Project Table
+mod:redpower:machines	redpower:timing	Timer | Sequencer | Pulse Former | Repeater | Synchronizer
+mod:redpower:machines	redpower:logic-cell	State Cell | Null Cell | Invert Cell | Non-Invert Cell
+mod:redpower:machines	redpower:latch	RS Latch | Toggle Latch | Transparent Latch
+mod:redpower:machines	redpower:or-gate	NOR Gate | OR Gate
+mod:redpower:machines	redpower:and-gate	NAND Gate | AND Gate
+mod:redpower:machines	redpower:xor-gate	XNOR Gate | XOR Gate
+mod:redpower:machines	not gate	NOT Gate
+mod:redpower:machines	buffer gate	Buffer Gate
+mod:redpower:machines	multiplexer	Multiplexer
+mod:redpower:machines	randomizer	Randomizer
+mod:redpower:machines	light sensor	Light Sensor
+mod:redpower:machines	counter	Counter
+mod:redpower:machines	bus transceiver	Bus Transceiver
+mod:redpower:machines	redpower:jacketed	Cobblestone Jacketed Wire | Cobblestone Jacketed Cable | Cobblestone Jacketed Bluewire | Stone Jacketed Wire | Stone Jacketed Cable | Stone Jacketed Bluewire | Wooden Plank Jacketed Wire | Wooden Plank Jacketed Cable | Wooden Plank Jacketed Bluewire | Sandstone Jacketed Wire | Sandstone Jacketed Cable | Sandstone Jacketed Bluewire | Moss Stone Jacketed Wire | Moss Stone Jacketed Cable | Moss Stone Jacketed Bluewire | Brick Jacketed Wire | Brick Jacketed Cable | Brick Jacketed Bluewire | Obsidian Jacketed Wire | Obsidian Jacketed Cable | Obsidian Jacketed Bluewire | Dirt Jacketed Wire | Dirt Jacketed Cable | Dirt Jacketed Bluewire | Clay Jacketed Wire | Clay Jacketed Cable | Clay Jacketed Bluewire | Bookshelf Jacketed Wire | Bookshelf Jacketed Cable | Bookshelf Jacketed Bluewire | Netherrack Jacketed Wire | Netherrack Jacketed Cable | Netherrack Jacketed Bluewire | Wood Jacketed Wire | Wood Jacketed Cable | Wood Jacketed Bluewire | Wood Jacketed Wire | Wood Jacketed Cable | Wood Jacketed Bluewire | Wood Jacketed Wire | Wood Jacketed Cable | Wood Jacketed Bluewire | Soul Sand Jacketed Wire | Soul Sand Jacketed Cable | Soul Sand Jacketed Bluewire | Polished Stone Jacketed Wire | Polished Stone Jacketed Cable | Polished Stone Jacketed Bluewire | Iron Jacketed Wire | Iron Jacketed Cable | Iron Jacketed Bluewire | Gold Jacketed Wire | Gold Jacketed Cable | Gold Jacketed Bluewire | Diamond Jacketed Wire | Diamond Jacketed Cable | Diamond Jacketed Bluewire | Lapis Lazuli Jacketed Wire | Lapis Lazuli Jacketed Cable | Lapis Lazuli Jacketed Bluewire | Snow Jacketed Wire | Snow Jacketed Cable | Snow Jacketed Bluewire | Pumpkin Jacketed Wire | Pumpkin Jacketed Cable | Pumpkin Jacketed Bluewire | Stone Brick Jacketed Wire | Stone Brick Jacketed Cable | Stone Brick Jacketed Bluewire | Stone Brick Jacketed Wire | Stone Brick Jacketed Cable | Stone Brick Jacketed Bluewire | Stone Brick Jacketed Wire | Stone Brick Jacketed Cable | Stone Brick Jacketed Bluewire | Nether Brick Jacketed Wire | Nether Brick Jacketed Cable | Nether Brick Jacketed Bluewire | Stone Brick Jacketed Wire | Stone Brick Jacketed Cable | Stone Brick Jacketed Bluewire | Wooden Plank Jacketed Wire | Wooden Plank Jacketed Cable | Wooden Plank Jacketed Bluewire | Wooden Plank Jacketed Wire | Wooden Plank Jacketed Cable | Wooden Plank Jacketed Bluewire | Wooden Plank Jacketed Wire | Wooden Plank Jacketed Cable | Wooden Plank Jacketed Bluewire | Sandstone Jacketed Wire | Sandstone Jacketed Cable | Sandstone Jacketed Bluewire | White Wool Jacketed Wire | White Wool Jacketed Cable | White Wool Jacketed Bluewire | Orange Wool Jacketed Wire | Orange Wool Jacketed Cable | Orange Wool Jacketed Bluewire | Magenta Wool Jacketed Wire | Magenta Wool Jacketed Cable | Magenta Wool Jacketed Bluewire | Light Blue Wool Jacketed Wire | Light Blue Wool Jacketed Cable | Light Blue Wool Jacketed Bluewire | Yellow Wool Jacketed Wire | Yellow Wool Jacketed Cable | Yellow Wool Jacketed Bluewire | Lime Wool Jacketed Wire | Lime Wool Jacketed Cable | Lime Wool Jacketed Bluewire | Pink Wool Jacketed Wire | Pink Wool Jacketed Cable | Pink Wool Jacketed Bluewire | Gray Wool Jacketed Wire | Gray Wool Jacketed Cable | Gray Wool Jacketed Bluewire | Light Gray Wool Jacketed Wire | Light Gray Wool Jacketed Cable | Light Gray Wool Jacketed Bluewire | Cyan Wool Jacketed Wire | Cyan Wool Jacketed Cable | Cyan Wool Jacketed Bluewire | Purple Wool Jacketed Wire | Purple Wool Jacketed Cable | Purple Wool Jacketed Bluewire | Blue Wool Jacketed Wire | Blue Wool Jacketed Cable | Blue Wool Jacketed Bluewire | Brown Wool Jacketed Wire | Brown Wool Jacketed Cable | Brown Wool Jacketed Bluewire | Green Wool Jacketed Wire | Green Wool Jacketed Cable | Green Wool Jacketed Bluewire | Red Wool Jacketed Wire | Red Wool Jacketed Cable | Red Wool Jacketed Bluewire | Black Wool Jacketed Wire | Black Wool Jacketed Cable | Black Wool Jacketed Bluewire | Sandstone Jacketed Wire | Sandstone Jacketed Cable | Sandstone Jacketed Bluewire | Wood Jacketed Wire | Wood Jacketed Cable | Wood Jacketed Bluewire | Marble Jacketed Wire | Marble Jacketed Cable | Marble Jacketed Bluewire | Basalt Jacketed Wire | Basalt Jacketed Cable | Basalt Jacketed Bluewire | Marble Brick Jacketed Wire | Marble Brick Jacketed Cable | Marble Brick Jacketed Bluewire | Basalt Cobblestone Jacketed Wire | Basalt Cobblestone Jacketed Cable | Basalt Cobblestone Jacketed Bluewire | Basalt Brick Jacketed Wire | Basalt Brick Jacketed Cable | Basalt Brick Jacketed Bluewire | Rubberwood Jacketed Wire | Rubberwood Jacketed Cable | Rubberwood Jacketed Bluewire | Ruby Block Jacketed Wire | Ruby Block Jacketed Cable | Ruby Block Jacketed Bluewire | Emerald Block Jacketed Wire | Emerald Block Jacketed Cable | Emerald Block Jacketed Bluewire | Sapphire Block Jacketed Wire | Sapphire Block Jacketed Cable | Sapphire Block Jacketed Bluewire
+mod:redpower:machines	insulated wire	Blue Insulated Wire | White Insulated Wire | White Insulated Wire | Orange Insulated Wire | Orange Insulated Wire | Magenta Insulated Wire | Magenta Insulated Wire | Light Blue Insulated Wire | Light Blue Insulated Wire | Yellow Insulated Wire | Yellow Insulated Wire | Lime Insulated Wire | Lime Insulated Wire | Pink Insulated Wire | Pink Insulated Wire | Gray Insulated Wire | Gray Insulated Wire | Light Gray Insulated Wire | Light Gray Insulated Wire | Cyan Insulated Wire | Cyan Insulated Wire | Purple Insulated Wire | Purple Insulated Wire | Blue Insulated Wire | Brown Insulated Wire | Brown Insulated Wire | Green Insulated Wire | Green Insulated Wire | Red Insulated Wire | Red Insulated Wire | Black Insulated Wire | Black Insulated Wire
+mod:redpower:machines	bundled cable	Blue Bundled Cable | White Bundled Cable | Bundled Cable | Orange Bundled Cable | Magenta Bundled Cable | Light Blue Bundled Cable | Yellow Bundled Cable | Lime Bundled Cable | Pink Bundled Cable | Gray Bundled Cable | Light Gray Bundled Cable | Cyan Bundled Cable | Purple Bundled Cable | Brown Bundled Cable | Green Bundled Cable | Red Bundled Cable | Black Bundled Cable
+mod:redpower:machines	alloy wire	Red Alloy Wire | Blue Alloy Wire
+mod:redpower:machines	redpower:computer	Backplane | 8K RAM Module | Monitor | Central Processing Unit | Disk Drive | IO Expander | Ribbon Cable
+mod:redpower:machines	lamp	White Lamp | Orange Lamp | Magenta Lamp | Light Blue Lamp | Yellow Lamp | Lime Lamp | Pink Lamp | Gray Lamp | Light Gray Lamp | Cyan Lamp | Purple Lamp | Blue Lamp | Brown Lamp | Green Lamp | Red Lamp | Black Lamp
+mod:redpower:machines	brick	Marble Brick | Basalt Brick
+mod:redpower:machines	block	Ruby Block | Emerald Block | Sapphire Block
+mod:redpower:machines	redpower:automation-machine	Deployer | Block Breaker | Sorting Machine | Assembler | Ejector
+mod:redpower:machines	redpower:transport-machine	Transposer | Filter | Item Detector | Retriever | Buffer | Regulator | Relay
+mod:redpower:machines	redpower:tube	Pneumatic Tube | Redstone Tube | Restriction Tube | Magtube | Fluid Pipe
+mod:redpower:machines	redpower:blulectric-furnace	Blulectric Furnace | Blulectric Alloy Furnace
+mod:redpower:machines	solar panel	Solar Panel
+mod:redpower:machines	accelerator	Accelerator
+mod:redpower:machines	battery box	Battery Box
+mod:redpower:machines	igniter	Igniter
+mod:redpower:machines	support frame	Support Frame
+mod:redpower:machines	frame motor	Frame Motor
+mod:redpower:machines	thermopile	Thermopile
+mod:redpower:machines	grate	Grate
+mod:redpower:machines	pump	Pump
+mod:ee2:equipment	philosopher's stone	Philosopher's Stone
+mod:ee2:equipment	transmutation tablet	Transmutation Tablet
+mod:ee2:equipment	tool:pickaxe	Dark Matter Pickaxe | Red Matter Pickaxe
+mod:ee2:equipment	tool:shovel	Dark Matter Shovel | Red Matter Shovel
+mod:ee2:equipment	tool:hoe	Dark Matter Hoe | Red Matter Hoe
+mod:ee2:equipment	tool:sword	Dark Matter Sword | Red Matter Sword
+mod:ee2:equipment	tool:axe	Dark Matter Axe | Red Matter Axe
+mod:ee2:equipment	shears	Dark Matter Shears | Red Matter Shears
+mod:ee2:equipment	hammer	Dark Matter Hammer | Red Matter Hammer
+mod:ee2:equipment	katar	Red Katar
+mod:ee2:equipment	morning star	Red Morning Star
+mod:ee2:equipment	armor:1	Dark Matter Armor | Red Matter Armor | Infernal Armor
+mod:ee2:equipment	armor:0	Dark Matter Helmet | Red Matter Helmet | Abyss Helmet
+mod:ee2:equipment	armor:2	Dark Matter Greaves | Red Matter Greaves | Gravity Greaves
+mod:ee2:equipment	armor:3	Dark Matter Boots | Red Matter Boots | Hurricane Boots
+mod:ee2:equipment	alchemical tome	Alchemical Tome
+mod:ee2:equipment	alchemy bag	Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag | Alchemy Bag
+mod:ee2:equipment	ee2:catalyst-lens	Destruction Catalyst | Hyperkinetic Lens | Catalytic Lens
+mod:ee2:equipment	ee2:stone	Soul Stone | Body Stone | Life Stone | Mind Stone
+mod:ee2:equipment	ee2:amulet	Evertide Amulet | Volcanite Amulet
+mod:ee2:equipment	ee2:ring-band	Iron Band | Black Hole Band | Ring of Ignition | Zero Ring | Ring of Arcana | Void Ring | Swiftwolf's Rending Gale | Harvest Goddess Band
+mod:ee2:equipment	archangel's smite	Archangel's Smite
+mod:ee2:equipment	divining rod	Divining Rod | Divining Rod | Divining Rod
+mod:ee2:equipment	talisman of repair	Talisman of Repair
+mod:ee2:equipment	watch of flowing time	Watch of Flowing Time
+mod:ee2:equipment	mercurial eye	Mercurial Eye
+mod:ee2:equipment	gem of eternal density	Gem of Eternal Density
+mod:ee2:components	ee2:fuel	Mobius Fuel | Aeternalis Fuel | Alchemical Coal | Mobius Fuel | Alchemical Coal
+mod:ee2:components	dark matter	Dark Matter
+mod:ee2:components	matter	Red Matter
+mod:ee2:components	ee2:klein-star	Klein Star Ein | Klein Star Zwei | Klein Star Drei | Klein Star Vier | Klein Star Sphere | Klein Star Omega
+mod:ee2:components	covalence dust	Covalence Dust | Covalence Dust | Covalence Dust
+mod:ee2:machines	dm pedestal	DM Pedestal
+mod:ee2:machines	transmutation tablet	Transmutation Tablet
+mod:ee2:machines	ee2:matter-block	DM Block | RM Block
+mod:ee2:machines	ee2:matter-furnace	DM Furnace | RM Furnace
+mod:ee2:machines	ee2:energy-collector	Energy Collector | Collector MK2 | Collector MK3
+mod:ee2:machines	energy condenser	Energy Condenser
+mod:ee2:machines	alchemical chest	Alchemical Chest
+mod:ee2:machines	nova catalyst	Nova Catalyst
+mod:ee2:machines	nova cataclysm	Nova Cataclysm
+mod:ee2:machines	interdiction torch	Interdiction Torch
+mod:ee2:machines	ee2:anti-matter-relay	Anti-Matter Relay | Relay MK2 | Relay MK3
+mod:thaumcraft:equipment	arcane tinkering tool	Arcane Tinkering Tool
+mod:thaumcraft:equipment	armor:0	Thaumium Helm
+mod:thaumcraft:equipment	armor:1	Thaumium Chestplate
+mod:thaumcraft:equipment	armor:2	Thaumium Leggings
+mod:thaumcraft:equipment	armor:3	Thaumium Boots
+mod:thaumcraft:equipment	tool:shovel	Thaumium Shovel
+mod:thaumcraft:equipment	tool:pickaxe	Thaumium Pickaxe
+mod:thaumcraft:equipment	tool:axe	Thaumium Axe
+mod:thaumcraft:equipment	tool:hoe	Thaumium Hoe
+mod:thaumcraft:equipment	tool:sword	Thaumium Sword
+mod:thaumcraft:equipment	arcane focus	Arcane Focus
+mod:thaumcraft:equipment	crystal ball	Crystal Ball
+mod:thaumcraft:components	thaumonomicon	Thaumonomicon
+mod:thaumcraft:machines	thaumcraft:vis-ore	Vis Ore | Vaporous Vis Ore | Aqueous Vis Ore | Earthen Vis Ore | Fiery Vis Ore | Tainted Vis Ore
+mod:thaumcraft:machines	crucible	Crucible
+mod:thaumcraft:machines	thaumic infuser	Thaumic Infuser
+mod:thaumcraft:machines	arcane bore	Arcane Bore
+mod:thaumcraft:machines	quaesitum	Quaesitum
+mod:thaumcraft:machines	thaumcraft:vis-network	Vis Conduit | Vis Valve | Vis Filter
+mod:thaumcraft:machines	thaumcraft:vis-machine	Vis Storage Tank | Vis Condenser | Vis Pump
+mod:thaumcraft:machines	arcane bellows	Arcane Bellows
+mod:wirelessredstone:equipment	wireless-redstone:handheld	Triangulator | Wireless Remote | Wireless Map | Wireless Tracker
+mod:wirelessredstone:equipment	wireless-redstone:sniffer	Wireless Sniffer | Private Sniffer
+mod:wirelessredstone:components	rep	REP
+mod:wirelessredstone:machines	wireless-redstone:node	Wireless Receiver | Wireless Transmitter | Wireless Jammer
+mod:compactsolars:machines	compact-solars:array	Low Voltage Solar Array | Medium Voltage Solar Array | High Voltage Solar Array
+mod:ironchest:components	iron-chests:upgrade	Silver to Gold Chest Upgrade | Iron to Gold Chest Upgrade | Copper to Silver Chest Upgrade | Copper to Iron Chest Upgrade | Gold to Diamond Chest Upgrade | Diamond to Crystal Chest Upgrade
+mod:ironchest:machines	iron-chests:chest	Silver Chest | Iron Chest | Copper Chest | Gold Chest | Diamond Chest | Crystal Chest
+mod:enderstorage:components	ender pouch	Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch | Ender Pouch
+mod:enderstorage:machines	ender chest	Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest | Ender Chest

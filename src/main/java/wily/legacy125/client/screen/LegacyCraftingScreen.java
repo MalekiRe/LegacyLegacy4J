@@ -22,9 +22,11 @@ import wily.legacy125.input.PadButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** Legacy Console recipe book backed by Minecraft's real player/workbench container. */
 public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements LegacyControllerScreen {
@@ -35,6 +37,14 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     private final int gridWidth;
     private final int gridHeight;
     private final List<LegacyRecipe> recipes = new ArrayList<LegacyRecipe>();
+    private final Map<LegacyRecipe, LegacyCraftingTab> recipeTabs =
+            new IdentityHashMap<LegacyRecipe, LegacyCraftingTab>();
+    private final List<LegacyCraftingTab> cachedTabs = new ArrayList<LegacyCraftingTab>();
+    private final Map<LegacyCraftingTab, List<LegacyRecipeGroup>> cachedGroups =
+            new IdentityHashMap<LegacyCraftingTab, List<LegacyRecipeGroup>>();
+    private final Map<String, ItemStack> tabIcons = new LinkedHashMap<String, ItemStack>();
+    private final Map<Integer, LegacyTabList125> categoryTabPages =
+            new LinkedHashMap<Integer, LegacyTabList125>();
     private final int[] originalX;
     private final int[] originalY;
     private int categoryIndex;
@@ -43,6 +53,10 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     private int inventoryIndex;
     private boolean inventoryMode;
     private boolean craftableOnly;
+    private List<LegacyRecipeGroup> filteredGroups = Collections.emptyList();
+    private int filteredCategoryIndex = -1;
+    private long filteredInventoryFingerprint;
+    private boolean filteredGroupsValid;
     private boolean slotsArranged;
     private String status = "";
     private int statusTicks;
@@ -71,6 +85,7 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
             originalY[i] = slot.yDisplayPosition;
         }
         loadRecipes();
+        buildRecipeIndex();
     }
 
     /** True only for the crafting view opened directly from the player's inventory. */
@@ -83,6 +98,7 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
         super.initGui();
         guiLeft += 21;
         guiTop += accessor.getInteger("tabYOffset");
+        categoryTabPages.clear();
         arrangeSlots();
         inventoryIndex = firstInventorySlot();
         normalizeSelection();
@@ -162,19 +178,34 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     private LegacyTabList125 categoryTabs() {
         List<LegacyCraftingTab> tabs = availableTabs();
         int start = tabWindowStart(tabs.size());
+        LegacyTabList125 cached = categoryTabPages.get(start);
+        if (cached != null) {
+            cached.setSelectedIndex(categoryIndex - start);
+            return cached;
+        }
         int count = Math.min(TOP_TABS, tabs.size() - start);
         LegacyTabList125 result = new LegacyTabList125();
         for (int visible = 0; visible < count; visible++) {
             int index = start + visible;
             int x = guiLeft + visible * accessor.getInteger("tabList.step");
             int y = guiTop + accessor.getInteger("tabList.y");
-            result.add(new LegacyTabButton125(x, y,
-                    accessor.getInteger("tabList.buttonWidth"), accessor.getInteger("tabList.height"),
-                    visible, TOP_TABS, false, tabs.get(index).iconTexture,
-                    accessor.getInteger("tabList.icon.x"), accessor.getInteger("tabList.icon.y"),
-                    0.0F, 2.5F));
+            LegacyCraftingTab tab = tabs.get(index);
+            ItemStack modIcon = modTabIcon(tab);
+            if (modIcon == null) {
+                result.add(new LegacyTabButton125(x, y,
+                        accessor.getInteger("tabList.buttonWidth"), accessor.getInteger("tabList.height"),
+                        visible, TOP_TABS, false, tab.iconTexture,
+                        accessor.getInteger("tabList.icon.x"), accessor.getInteger("tabList.icon.y"),
+                        0.0F, 2.5F));
+            } else {
+                result.add(new LegacyTabButton125(x, y,
+                        accessor.getInteger("tabList.buttonWidth"), accessor.getInteger("tabList.height"),
+                        visible, TOP_TABS, modIcon, accessor.getInteger("tabList.icon.x"),
+                        accessor.getInteger("tabList.icon.y"), 2.5F));
+            }
         }
         result.setSelectedIndex(categoryIndex - start);
+        categoryTabPages.put(start, result);
         return result;
     }
 
@@ -195,10 +226,17 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     protected void drawGuiContainerForegroundLayer() {
         List<LegacyCraftingTab> tabs = availableTabs();
         LegacyCraftingTab category = tabs.get(clamp(categoryIndex, 0, tabs.size() - 1));
+        int page = categoryIndex / TOP_TABS + 1;
+        int pages = (tabs.size() + TOP_TABS - 1) / TOP_TABS;
         String recipeLabel = category.title + (craftableOnly ? " - Available" : "");
         LegacyTheme.drawCenteredString(mc, trim(recipeLabel, 27), xSize / 2,
                 accessor.getInteger("craftingTitle.y"),
                 LegacyTheme.MUTED_TEXT, false);
+        if (pages > 1) {
+            String pageLabel = page + "/" + pages;
+            LegacyTheme.drawString(mc, pageLabel, xSize - LegacyTheme.stringWidth(pageLabel) - 5,
+                    accessor.getInteger("craftingTitle.y"), LegacyTheme.MUTED_TEXT, false);
+        }
         LegacyTheme.drawCenteredString(mc, "Inventory", accessor.getInteger("inventoryTitle.x"),
                 accessor.getInteger("inventoryTitle.y"),
                 LegacyTheme.MUTED_TEXT, false);
@@ -546,27 +584,27 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     private List<LegacyRecipeGroup> visibleGroups() {
         List<LegacyCraftingTab> tabs = availableTabs();
         LegacyCraftingTab category = tabs.get(clamp(categoryIndex, 0, tabs.size() - 1));
-        Map<String, LegacyRecipeGroup> grouped = new LinkedHashMap<String, LegacyRecipeGroup>();
-        for (LegacyRecipe recipe : recipes) {
-            if (LegacyCraftingTabs.categoryFor(recipe.output) != category) continue;
-            if (craftableOnly && mc != null && mc.thePlayer != null
-                    && !recipe.hasIngredients(playerInventory())) continue;
-            String key = listingKey(recipe, category);
-            if (key == null) continue;
-            LegacyRecipeGroup group = grouped.get(key);
-            if (group == null) {
-                group = new LegacyRecipeGroup(key);
-                grouped.put(key, group);
-            }
-            group.add(recipe);
+        List<LegacyRecipeGroup> groups = cachedGroups.get(category);
+        if (groups == null || !craftableOnly || mc == null || mc.thePlayer == null) {
+            return groups == null ? Collections.<LegacyRecipeGroup>emptyList() : groups;
         }
-        List<LegacyRecipeGroup> result = new ArrayList<LegacyRecipeGroup>(grouped.values());
-        if ("structures".equals(category.id)) Collections.sort(result, new Comparator<LegacyRecipeGroup>() {
-            public int compare(LegacyRecipeGroup left, LegacyRecipeGroup right) {
-                return left.key.compareTo(right.key);
+        ItemStack[] inventory = playerInventory();
+        long fingerprint = inventoryFingerprint(inventory);
+        if (filteredGroupsValid && filteredCategoryIndex == categoryIndex
+                && filteredInventoryFingerprint == fingerprint) return filteredGroups;
+        List<LegacyRecipeGroup> available = new ArrayList<LegacyRecipeGroup>();
+        for (LegacyRecipeGroup group : groups) {
+            LegacyRecipeGroup filtered = new LegacyRecipeGroup(group.key);
+            for (LegacyRecipe recipe : group.recipes) {
+                if (recipe.hasIngredients(inventory)) filtered.add(recipe);
             }
-        });
-        return result;
+            if (!filtered.recipes.isEmpty()) available.add(filtered);
+        }
+        filteredGroups = available;
+        filteredCategoryIndex = categoryIndex;
+        filteredInventoryFingerprint = fingerprint;
+        filteredGroupsValid = true;
+        return filteredGroups;
     }
 
     private LegacyRecipe selectedRecipe() {
@@ -588,18 +626,61 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     }
 
     private List<LegacyCraftingTab> availableTabs() {
-        List<LegacyCraftingTab> available = new ArrayList<LegacyCraftingTab>();
-        for (LegacyCraftingTab tab : LegacyCraftingTabs.tabs()) {
-            if (gridWidth == 2 && "armour".equals(tab.id)) continue;
-            for (LegacyRecipe recipe : recipes) {
-                if (LegacyCraftingTabs.categoryFor(recipe.output) == tab) {
-                    available.add(tab);
-                    break;
-                }
-            }
+        return cachedTabs;
+    }
+
+    private void buildRecipeIndex() {
+        Set<LegacyCraftingTab> present = Collections.newSetFromMap(
+                new IdentityHashMap<LegacyCraftingTab, Boolean>());
+        for (LegacyRecipe recipe : recipes) {
+            LegacyCraftingTab category = LegacyCraftingTabs.categoryFor(recipe.output);
+            recipeTabs.put(recipe, category);
+            present.add(category);
         }
-        if (available.isEmpty()) available.add(LegacyCraftingTabs.tabs().get(0));
-        return available;
+        List<LegacyCraftingTab> registered = LegacyCraftingTabs.tabs();
+        for (LegacyCraftingTab tab : registered) {
+            if (gridWidth == 2 && "armour".equals(tab.id)) continue;
+            if (present.contains(tab)) cachedTabs.add(tab);
+        }
+        if (cachedTabs.isEmpty()) cachedTabs.add(registered.get(0));
+
+        Map<LegacyCraftingTab, Map<String, LegacyRecipeGroup>> builders =
+                new IdentityHashMap<LegacyCraftingTab, Map<String, LegacyRecipeGroup>>();
+        for (LegacyCraftingTab tab : cachedTabs) {
+            builders.put(tab, new LinkedHashMap<String, LegacyRecipeGroup>());
+        }
+        for (LegacyRecipe recipe : recipes) {
+            LegacyCraftingTab category = recipeTabs.get(recipe);
+            Map<String, LegacyRecipeGroup> grouped = builders.get(category);
+            if (grouped == null) continue;
+            String key = listingKey(recipe, category);
+            if (key == null) continue;
+            LegacyRecipeGroup group = grouped.get(key);
+            if (group == null) {
+                group = new LegacyRecipeGroup(key);
+                grouped.put(key, group);
+            }
+            group.add(recipe);
+        }
+        for (LegacyCraftingTab tab : cachedTabs) {
+            List<LegacyRecipeGroup> groups = new ArrayList<LegacyRecipeGroup>(builders.get(tab).values());
+            if ("structures".equals(tab.id)) Collections.sort(groups, new Comparator<LegacyRecipeGroup>() {
+                public int compare(LegacyRecipeGroup left, LegacyRecipeGroup right) {
+                    return left.key.compareTo(right.key);
+                }
+            });
+            cachedGroups.put(tab, Collections.unmodifiableList(groups));
+        }
+    }
+
+    static long inventoryFingerprint(ItemStack[] inventory) {
+        long hash = 1125899906842597L;
+        for (ItemStack stack : inventory) {
+            hash = hash * 31 + (stack == null ? 0 : stack.itemID);
+            hash = hash * 31 + (stack == null ? 0 : stack.getItemDamage());
+            hash = hash * 31 + (stack == null ? 0 : stack.stackSize);
+        }
+        return hash;
     }
 
     private String listingKey(LegacyRecipe recipe, LegacyCraftingTab category) {
@@ -678,8 +759,22 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
         return result.toString();
     }
 
+    /** Selects a concrete category for deterministic paged-tab screenshots. */
+    public String legacyVisualSelectCategory(String categoryId) {
+        List<LegacyCraftingTab> tabs = availableTabs();
+        for (int i = 0; i < tabs.size(); i++) {
+            if (!tabs.get(i).id.equals(categoryId)) continue;
+            setCategory(i);
+            return tabs.get(i).id + "\t" + tabs.get(i).title + "\tpage="
+                    + (i / TOP_TABS + 1) + "/" + ((tabs.size() + TOP_TABS - 1) / TOP_TABS)
+                    + "\trecipes=" + visibleGroups().size();
+        }
+        return "";
+    }
+
     private void setCategory(int index) {
         categoryIndex = index;
+        filteredGroupsValid = false;
         groupIndex = 0;
         variantIndex = 0;
         inventoryMode = false;
@@ -702,6 +797,7 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
 
     private void toggleFilter() {
         craftableOnly = !craftableOnly;
+        filteredGroupsValid = false;
         groupIndex = 0;
         variantIndex = 0;
         normalizeSelection();
@@ -720,8 +816,60 @@ public final class LegacyCraftingScreen extends LegacyGuiContainer125 implements
     }
 
     private int tabWindowStart(int size) {
+        return tabPageStart(categoryIndex, size);
+    }
+
+    static int tabPageStart(int selectedIndex, int size) {
         if (size <= TOP_TABS) return 0;
-        return Math.max(0, Math.min(categoryIndex - TOP_TABS + 1, size - TOP_TABS));
+        int selected = clamp(selectedIndex, 0, size - 1);
+        return selected / TOP_TABS * TOP_TABS;
+    }
+
+    private ItemStack modTabIcon(LegacyCraftingTab tab) {
+        if (tab == null || !tab.id.startsWith("mod:")) return null;
+        ItemStack cached = tabIcons.get(tab.id);
+        if (cached != null) return cached;
+        String preferred = preferredTabIcon(tab.id);
+        ItemStack fallback = null;
+        for (LegacyRecipe recipe : recipes) {
+            if (recipeTabs.get(recipe) != tab) continue;
+            if (fallback == null) fallback = recipe.output.copy();
+            String name = recipeName(recipe).toLowerCase(java.util.Locale.ENGLISH)
+                    .replace('-', ' ').replaceAll("\\s+", " ").trim();
+            if (preferred.equals(name)) {
+                tabIcons.put(tab.id, recipe.output.copy());
+                return tabIcons.get(tab.id);
+            }
+        }
+        if (fallback != null) tabIcons.put(tab.id, fallback);
+        return fallback;
+    }
+
+    private static String preferredTabIcon(String id) {
+        if ("mod:ic2:equipment".equals(id)) return "mining drill";
+        if ("mod:ic2:components".equals(id)) return "electronic circuit";
+        if ("mod:ic2:machines".equals(id)) return "macerator";
+        if ("mod:buildcraft:equipment".equals(id)) return "wrench";
+        if ("mod:buildcraft:components".equals(id)) return "wooden gear";
+        if ("mod:buildcraft:machines".equals(id)) return "quarry";
+        if ("mod:redpower:equipment".equals(id)) return "screwdriver";
+        if ("mod:redpower:components".equals(id)) return "fine copper wire";
+        if ("mod:redpower:machines".equals(id)) return "timer";
+        if ("mod:ee2:equipment".equals(id)) return "philosopher's stone";
+        if ("mod:ee2:components".equals(id)) return "dark matter";
+        if ("mod:ee2:machines".equals(id)) return "energy collector";
+        if ("mod:thaumcraft:equipment".equals(id)) return "arcane tinkering tool";
+        if ("mod:thaumcraft:components".equals(id)) return "thaumonomicon";
+        if ("mod:thaumcraft:machines".equals(id)) return "thaumic infuser";
+        if ("mod:wirelessredstone:equipment".equals(id)) return "wireless remote";
+        if ("mod:wirelessredstone:components".equals(id)) return "rep";
+        if ("mod:wirelessredstone:machines".equals(id)) return "wireless transmitter";
+        if ("mod:compactsolars:machines".equals(id)) return "low voltage solar array";
+        if ("mod:ironchest:components".equals(id)) return "copper to iron chest upgrade";
+        if ("mod:ironchest:machines".equals(id)) return "iron chest";
+        if ("mod:enderstorage:components".equals(id)) return "ender pouch";
+        if ("mod:enderstorage:machines".equals(id)) return "ender chest";
+        return "";
     }
 
     private void message(String text) {

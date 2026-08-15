@@ -5,6 +5,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.ContainerChest;
 import net.minecraft.src.ContainerFurnace;
 import net.minecraft.src.ContainerWorkbench;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -180,13 +181,12 @@ public final class LegacyVisualScenarioRunner {
             screen = new LegacyCraftingScreen(minecraft.thePlayer.inventorySlots);
         } else if ("crafting_table".equals(screenScenario)) {
             setBlock(minecraft, Block.workbench.blockID);
-            screen = new LegacyCraftingScreen(new ContainerWorkbench(
-                    minecraft.thePlayer.inventory, minecraft.theWorld, FIXTURE_X, FIXTURE_Y, FIXTURE_Z));
+            screen = new LegacyCraftingScreen(visualWorkbench(minecraft));
         } else if ("crafting_modded_tools".equals(screenScenario)
-                || "crafting_modded_families".equals(screenScenario)) {
+                || "crafting_modded_families".equals(screenScenario)
+                || modCategoryId(screenScenario) != null) {
             setBlock(minecraft, Block.workbench.blockID);
-            screen = new LegacyCraftingScreen(new ContainerWorkbench(
-                    minecraft.thePlayer.inventory, minecraft.theWorld, FIXTURE_X, FIXTURE_Y, FIXTURE_Z));
+            screen = new LegacyCraftingScreen(visualWorkbench(minecraft));
         } else if ("chest".equals(screenScenario)) {
             setBlock(minecraft, Block.chest.blockID);
             TileEntityChest chest = (TileEntityChest) minecraft.theWorld.getBlockTileEntity(
@@ -211,6 +211,11 @@ public final class LegacyVisualScenarioRunner {
             writeMetadata(scenario, "tool:pickaxe = " + members + System.getProperty("line.separator"));
         } else if ("crafting_modded_families".equals(screenScenario)) {
             writeMetadata(scenario, ((LegacyCraftingScreen) screen).legacyVisualDescribeRecipeFamilies());
+        } else if (modCategoryId(screenScenario) != null) {
+            String category = modCategoryId(screenScenario);
+            String metadata = ((LegacyCraftingScreen) screen).legacyVisualSelectCategory(category);
+            if (metadata.length() == 0) throw new IllegalStateException("No crafting category found: " + category);
+            writeMetadata(scenario, metadata + System.getProperty("line.separator"));
         }
         if (scenario.endsWith("_mouse_hover")) movePointerToFirstSlot(minecraft, screen);
         else if (scenario.endsWith("_controller_hover")) showControllerFocus(screen);
@@ -228,6 +233,33 @@ public final class LegacyVisualScenarioRunner {
             return scenario.substring(0, scenario.length() - "_carried_top_left".length());
         }
         return scenario;
+    }
+
+    private String modCategoryId(String scenario) {
+        String prefix = "crafting_mod_";
+        if (!scenario.startsWith(prefix)) return null;
+        String value = scenario.substring(prefix.length());
+        String[] sections = {"equipment", "components", "machines"};
+        for (String section : sections) {
+            String suffix = "_" + section;
+            if (value.endsWith(suffix) && value.length() > suffix.length()) {
+                return "mod:" + value.substring(0, value.length() - suffix.length()) + ":" + section;
+            }
+        }
+        return null;
+    }
+
+    private ContainerWorkbench visualWorkbench(Minecraft minecraft) {
+        return new ContainerWorkbench(minecraft.thePlayer.inventory, minecraft.theWorld,
+                FIXTURE_X, FIXTURE_Y, FIXTURE_Z) {
+            @Override
+            public boolean canInteractWith(EntityPlayer player) {
+                // The integrated server may replace the client-only fixture
+                // during a multi-scenario audit. Keep this synthetic screen
+                // open long enough to capture it deterministically.
+                return true;
+            }
+        };
     }
 
     private void movePointerToFirstSlot(Minecraft minecraft, GuiScreen screen) {

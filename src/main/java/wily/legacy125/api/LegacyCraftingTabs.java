@@ -19,6 +19,7 @@ import net.minecraft.src.ItemTool;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /** Public category registry and the seven Legacy Console crafting defaults. */
 public final class LegacyCraftingTabs {
@@ -33,6 +34,16 @@ public final class LegacyCraftingTabs {
         TABS.add(tab("mechanisms", "Mechanisms"));
         TABS.add(tab("transport", "Transport"));
         TABS.add(tab("decoration", "Decoration"));
+
+        addModTabs("ic2", "IC2");
+        addModTabs("buildcraft", "BuildCraft");
+        addModTabs("redpower", "RedPower");
+        addModTabs("ee2", "EE2");
+        addModTabs("thaumcraft", "ThaumCraft");
+        addModTabs("wirelessredstone", "Wireless Redstone");
+        addModTabs("compactsolars", "Compact Solars");
+        addModTabs("ironchest", "Iron Chests");
+        addModTabs("enderstorage", "EnderStorage");
     }
 
     private LegacyCraftingTabs() {
@@ -44,6 +55,22 @@ public final class LegacyCraftingTabs {
                 return id.equals(classifyId(output));
             }
         });
+    }
+
+    private static void addModTabs(final String modId, String title) {
+        TABS.add(modTab(modId, "equipment", title + " Equipment", "tools"));
+        TABS.add(modTab(modId, "components", title + " Components", "decoration"));
+        TABS.add(modTab(modId, "machines", title + " Blocks & Machines", "mechanisms"));
+    }
+
+    private static LegacyCraftingTab modTab(final String modId, final String section, String title,
+                                             String icon) {
+        return new LegacyCraftingTab("mod:" + modId + ":" + section, title, ICON + icon + ".png",
+                new LegacyCraftingTab.Matcher() {
+                    public boolean matches(ItemStack output) {
+                        return modId.equals(modId(output)) && section.equals(modSection(output));
+                    }
+                });
     }
 
     /** Registers a mod category after the built-ins and before the Structures fallback. */
@@ -85,6 +112,46 @@ public final class LegacyCraftingTabs {
                 || item == Item.book || isDecorationBlock(output)) return "decoration";
         if (item instanceof ItemBlock) return "structures";
         return "decoration";
+    }
+
+    static String modId(ItemStack output) {
+        if (output == null || output.getItem() == null) return null;
+        String owner = modIdFromType(output.getItem().getClass());
+        if (owner != null) return owner;
+        if (output.getItem() instanceof ItemBlock) {
+            int block = ((ItemBlock) output.getItem()).getBlockID();
+            if (block >= 0 && block < Block.blocksList.length && Block.blocksList[block] != null) {
+                return modIdFromType(Block.blocksList[block].getClass());
+            }
+        }
+        return null;
+    }
+
+    static String modIdFromType(Class<?> type) {
+        while (type != null && type != Object.class) {
+            String name = type.getName().toLowerCase(Locale.ENGLISH);
+            if (name.startsWith("ic2.")) return "ic2";
+            if (name.startsWith("buildcraft.") || name.contains(".buildcraft.")) return "buildcraft";
+            if (name.startsWith("eloraam.")) return "redpower";
+            if (name.startsWith("ee.")) return "ee2";
+            if (name.startsWith("thaumcraft.")) return "thaumcraft";
+            if (name.startsWith("codechicken.wirelessredstone.")) return "wirelessredstone";
+            if (name.startsWith("cpw.mods.compactsolars.")) return "compactsolars";
+            if (name.startsWith("cpw.mods.ironchest.")) return "ironchest";
+            if (name.startsWith("codechicken.enderstorage.")) return "enderstorage";
+            type = type.getSuperclass();
+        }
+        return null;
+    }
+
+    private static String modSection(ItemStack output) {
+        Item item = output.getItem();
+        if (item instanceof ItemBlock) return "machines";
+        if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemHoe
+                || item instanceof ItemBow || item instanceof ItemShears || item instanceof ItemFishingRod
+                || item instanceof ItemFlintAndSteel || LegacyCraftingGroups.isToolLike(output)
+                || LegacyCraftingGroups.isArmorLike(output)) return "equipment";
+        return "components";
     }
 
     private static boolean isMechanismBlock(ItemStack output) {

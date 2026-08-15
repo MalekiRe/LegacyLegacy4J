@@ -1,5 +1,6 @@
 package wily.legacy125.client.screen;
 
+import ic2.common.FakeIc2Items;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
@@ -31,6 +32,21 @@ final class LegacyRecipeGroupTest {
                 LegacyRecipeGroup.key(new ItemStack(Item.pickaxeDiamond)));
         assertEquals(LegacyRecipeGroup.key(new ItemStack(Item.helmetLeather)),
                 LegacyRecipeGroup.key(new ItemStack(Item.helmetGold)));
+    }
+
+    @Test
+    void craftingInventoryFingerprintChangesOnlyWithIngredientState() {
+        ItemStack copper = named(29990, "Copper Ingot");
+        ItemStack[] inventory = new ItemStack[]{copper, null};
+        long original = LegacyCraftingScreen.inventoryFingerprint(inventory);
+
+        assertEquals(original, LegacyCraftingScreen.inventoryFingerprint(inventory));
+        copper.stackSize++;
+        assertFalse(original == LegacyCraftingScreen.inventoryFingerprint(inventory));
+
+        copper.stackSize--;
+        inventory[1] = named(29991, "Tin Ingot");
+        assertFalse(original == LegacyCraftingScreen.inventoryFingerprint(inventory));
     }
 
     @Test
@@ -308,6 +324,28 @@ final class LegacyRecipeGroupTest {
             assertEquals("tools", LegacyCraftingTabs.categoryFor(named(31200 + i, names[i])).id,
                     names[i]);
         }
+    }
+
+    @Test
+    void splitsOwnedModRecipesAcrossEquipmentComponentsAndMachines() {
+        ItemStack equipment = new ItemStack(new FakeIc2Items.Equipment(31300));
+        ItemStack component = new ItemStack(new FakeIc2Items.Component(31301));
+        new FakeIc2Items.MachineBlock(200);
+        ItemStack machine = new ItemStack(new FakeIc2Items.Machine(200));
+
+        assertEquals("mod:ic2:equipment", LegacyCraftingTabs.categoryFor(equipment).id);
+        assertEquals("mod:ic2:components", LegacyCraftingTabs.categoryFor(component).id);
+        assertEquals("mod:ic2:machines", LegacyCraftingTabs.categoryFor(machine).id);
+    }
+
+    @Test
+    void topCraftingTabsAdvanceInDiscreteSevenTabPages() {
+        assertEquals(0, LegacyCraftingScreen.tabPageStart(0, 20));
+        assertEquals(0, LegacyCraftingScreen.tabPageStart(6, 20));
+        assertEquals(7, LegacyCraftingScreen.tabPageStart(7, 20));
+        assertEquals(7, LegacyCraftingScreen.tabPageStart(13, 20));
+        assertEquals(14, LegacyCraftingScreen.tabPageStart(14, 20));
+        assertEquals(14, LegacyCraftingScreen.tabPageStart(19, 20));
     }
 
     @Test
